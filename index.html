@@ -1,0 +1,2067 @@
+<!DOCTYPE html>
+<!--
+  ===========================================================================
+  مُولِّد الجداول الدراسية — أداة تنسيق الجداول لطلاب جامعة جازان
+  ---------------------------------------------------------------------------
+  حقوق التأليف © 2026 حمد القاضي (Hamad Alqadhi). جميع الحقوق محفوظة.
+  لا يجوز نسخ هذا العمل أو تعديله أو إعادة نشره دون إذن خطي من صاحبه.
+
+  ملحوظة في البنية: يعمل هذا الملف كاملًا داخل متصفح المستخدم؛ فلا خادم
+  يستقبل بياناته، ولا شبكة تُستدعى، ولا شيء يُخزَّن. وهذا اختيار مقصود،
+  إذ إن ما يلصقه الطالب مأخوذ من صفحة نظامه الأكاديمي وهو مسجَّل الدخول.
+  ===========================================================================
+-->
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>مُولِّد الجداول الدراسية — جامعة جازان</title>
+<meta name="description" content="أداة مجانية تولّد لك كل الجداول الدراسية الممكنة الخالية من التعارض الزمني، مرتّبة وفق أيام الدوام وساعات البريك. المعالجة تتم داخل متصفحك بالكامل.">
+<meta name="author" content="Hamad Alqadhi">
+<meta name="theme-color" content="#0E1116">
+
+<meta property="og:type" content="website">
+<meta property="og:locale" content="ar_SA">
+<meta property="og:site_name" content="مُولِّد الجداول الدراسية">
+<meta property="og:title" content="مُولِّد الجداول الدراسية — جامعة جازان">
+<meta property="og:description" content="ألصق مقرراتك المطروحة، واحصل فورًا على كل الجداول الخالية من التعارض، مرتّبة حسب أيام الدوام وساعات البريك.">
+<meta property="og:url" content="https://example.com/">
+<meta property="og:image" content="https://example.com/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="مُولِّد الجداول الدراسية — جامعة جازان">
+<meta name="twitter:description" content="ألصق مقرراتك المطروحة، واحصل فورًا على كل الجداول الخالية من التعارض.">
+<meta name="twitter:image" content="https://example.com/og.png">
+
+<!-- أيقونة التبويب: مضمَّنة داخل الملف، فلا تحتاج ملفًا خارجيًا -->
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230E1116'/%3E%3Crect x='6' y='8' width='20' height='18' rx='3' fill='none' stroke='%237C8CFF' stroke-width='2'/%3E%3Cpath d='M6 13h20' stroke='%237C8CFF' stroke-width='2'/%3E%3Cpath d='M11 6v4M21 6v4' stroke='%237C8CFF' stroke-width='2' stroke-linecap='round'/%3E%3Crect x='10' y='16.5' width='5' height='3' rx='1' fill='%234ADE9B'/%3E%3Crect x='17' y='20.5' width='5' height='3' rx='1' fill='%23F0B85C'/%3E%3C/svg%3E">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --paper:#0D1016;
+  --surface:#161B24;
+  --raise:#1D2430;
+  --ink:#E7EBF3;
+  --ink-soft:#8C97AC;
+  --line:#28313F;
+  --indigo:#7C9CFF;
+  --indigo-soft:#1B2440;
+  --amber:#FFC93C;
+  --danger:#FF7A8A;
+  --ok:#3DD6A8;
+  --radius:10px;
+  --shadow:0 1px 2px rgba(0,0,0,.35), 0 10px 30px rgba(0,0,0,.30);
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  /* الخط من Google Fonts، ويتراجع إلى خطوط النظام إن تعذّر تحميله */
+  font-family:"IBM Plex Sans Arabic","Segoe UI","Noto Sans Arabic",Tahoma,Arial,sans-serif;
+  font-size:15px;
+  line-height:1.6;
+}
+.wrap{max-width:1180px;margin:0 auto;padding:28px 20px 80px}
+
+header.top{
+  display:flex;flex-direction:column;
+  padding-bottom:24px;margin-bottom:26px;border-bottom:1px solid var(--line);
+}
+header.top .headtools{
+  display:flex;align-items:center;justify-content:flex-end;gap:10px;width:100%;
+}
+header.top .headmain{margin-top:16px;text-align:center}
+header.top h1{
+  margin:0;padding-top:4px;font-size:clamp(22px,3vw,32px);font-weight:700;letter-spacing:-.4px;
+  line-height:1.5;white-space:nowrap;
+}
+header.top p{
+  margin:10px auto 0;max-width:720px;color:var(--ink-soft);font-size:13px;line-height:1.9;
+}
+
+@media(max-width:640px){
+  header.top h1{font-size:21px;white-space:normal}
+  header.top p{font-size:12.5px}
+}
+.stamp{
+  font-variant-numeric:tabular-nums;font-size:12px;color:var(--ink-soft);
+  border:1px solid var(--line);border-radius:999px;padding:4px 12px;background:var(--raise);white-space:nowrap;
+}
+
+.guide{
+  background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+  box-shadow:var(--shadow);margin-bottom:20px;overflow:hidden;
+}
+.guide summary{
+  display:flex;align-items:center;gap:10px;cursor:pointer;list-style:none;
+  padding:16px 20px;font-size:14.5px;font-weight:600;color:var(--ink);
+}
+.guide summary::-webkit-details-marker{display:none}
+.guide summary:hover{background:color-mix(in srgb, var(--indigo) 6%, transparent)}
+.guide .gicon{
+  width:26px;height:26px;flex:none;display:grid;place-items:center;border-radius:7px;
+  background:var(--indigo-soft);color:var(--indigo);
+}
+.guide .gicon svg{width:16px;height:16px}
+.guide summary .caret{margin-inline-start:auto;color:var(--ink-soft);font-size:12px;transition:transform .18s}
+.guide[open] summary .caret{transform:rotate(180deg)}
+
+.guide .steps{
+  margin:0;padding:4px 20px 20px;list-style:none;counter-reset:g;
+  border-top:1px dashed var(--line);
+}
+.guide .steps li{
+  position:relative;counter-increment:g;padding:14px 40px 14px 0;
+  border-bottom:1px dashed var(--line);
+}
+.guide .steps li:last-child{border-bottom:0;padding-bottom:4px}
+.guide .steps li::before{
+  content:counter(g);position:absolute;right:0;top:14px;
+  width:26px;height:26px;display:grid;place-items:center;border-radius:8px;
+  background:var(--indigo-soft);color:var(--indigo);
+  font-size:12px;font-weight:700;font-variant-numeric:tabular-nums;
+}
+.guide .steps b{display:block;font-size:14px;font-weight:600;margin-bottom:4px}
+.guide .steps span{display:block;font-size:13px;color:var(--ink-soft);line-height:1.9}
+.guide .steps em{font-style:normal;color:var(--ink);font-weight:600}
+.guide .steps code{
+  display:block;margin:8px 0;padding:9px 12px;border-radius:7px;
+  background:var(--paper);border:1px solid var(--line);
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11.5px;
+  color:var(--ink);direction:ltr;text-align:left;overflow-x:auto;white-space:pre;line-height:1.7;
+}
+kbd{
+  display:inline-block;padding:1px 7px;border-radius:5px;
+  background:var(--paper);border:1px solid var(--line);border-bottom-width:2px;
+  font-family:inherit;font-size:11.5px;font-weight:600;color:var(--ink);direction:ltr;
+}
+
+.step{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:20px;margin-bottom:20px}
+.step > h2{
+  margin:0 0 14px;font-size:16px;font-weight:600;display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+}
+.step > h2 .stamp{margin-inline-start:auto;font-weight:500}
+.step > h2 .num{
+  width:26px;height:26px;border-radius:7px;background:var(--indigo);color:#0D1016;
+  display:grid;place-items:center;font-size:13px;font-weight:700;flex:none;
+  font-variant-numeric:tabular-nums;line-height:1;
+}
+.hint{color:var(--ink-soft);font-size:13px;margin:0 0 12px}
+
+textarea{
+  /* الارتفاع يسع النص الإرشادي كاملًا (١٨ سطرًا) بلا شريط تمرير */
+  width:100%;min-height:390px;resize:vertical;padding:14px;
+  border:1px solid var(--line);border-radius:8px;background:var(--paper);color:var(--ink);
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;line-height:1.6;
+  direction:ltr;text-align:left;
+}
+textarea::placeholder{color:var(--ink-soft);opacity:.6}
+textarea:focus,input:focus,button:focus-visible{outline:2px solid var(--indigo);outline-offset:1px}
+
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:12px}
+button{
+  font-family:inherit;font-size:14px;font-weight:600;cursor:pointer;
+  border-radius:8px;padding:9px 16px;border:1px solid var(--indigo);
+  background:var(--indigo);color:#0D1016;transition:transform .06s ease, opacity .15s;
+}
+button:hover{opacity:.9}
+button:active{transform:translateY(1px)}
+button.ghost{background:transparent;color:var(--ink);border-color:var(--line)}
+button.ghost:hover{border-color:var(--indigo);color:var(--indigo)}
+button:disabled{opacity:.45;cursor:not-allowed}
+
+.dd{position:relative;width:100%;max-width:760px}
+.ddbtn{
+  width:100%;display:flex;align-items:center;justify-content:space-between;gap:10px;
+  background:var(--raise);color:var(--ink);border:1px solid var(--line);font-weight:500;
+}
+.ddbtn[aria-expanded="true"]{border-color:var(--indigo)}
+.ddbtn .caret{color:var(--ink-soft);font-size:12px}
+.ddpanel{
+  position:absolute;z-index:20;top:calc(100% + 6px);right:0;left:0;max-height:340px;overflow:auto;
+  background:var(--surface);border:1px solid var(--line);border-radius:8px;box-shadow:var(--shadow);padding:6px;
+}
+.ddpanel label{
+  display:flex;align-items:center;gap:12px;padding:9px 12px;border-radius:6px;cursor:pointer;font-size:13.5px;
+}
+.ddpanel label:hover{background:var(--indigo-soft)}
+.ddpanel input{width:16px;height:16px;accent-color:var(--indigo);flex:none}
+.ddgroup{
+  position:sticky;top:-6px;z-index:1;
+  display:flex;align-items:center;justify-content:space-between;gap:8px;
+  margin:6px 2px 4px;padding:6px 10px;border-radius:6px;
+  background:var(--indigo-soft);color:var(--indigo);
+  font-size:11.5px;font-weight:700;letter-spacing:.2px;
+}
+.ddgroup .c{font-variant-numeric:tabular-nums;opacity:.75;font-weight:600}
+.ddpanel{scroll-padding-top:32px}
+.ddtxt{display:flex;flex-direction:column;gap:2px;min-width:0}
+.ddname{font-size:13.5px;line-height:1.5}
+
+.ddexam{
+  margin-inline-start:auto;flex:none;text-align:center;min-width:96px;
+  display:flex;flex-direction:column;gap:1px;
+  border-inline-start:1px solid var(--line);padding-inline-start:12px;
+}
+.ddexam .lbl{font-size:9.5px;color:var(--ink-soft);white-space:nowrap}
+.ddexam .val{
+  font-size:13px;font-weight:700;color:var(--indigo);
+  font-variant-numeric:tabular-nums;line-height:1.3;
+}
+.ddexam.none .val{color:var(--ink-soft);font-weight:500}
+.ddmeta{font-size:11px;color:var(--ink-soft);font-variant-numeric:tabular-nums}
+ul.clash{margin:8px 0;padding-inline-start:20px}
+ul.clash li{margin:3px 0}
+#sortBy{
+  font-family:inherit;font-size:13px;padding:8px 10px;border:1px solid var(--line);
+  border-radius:8px;background:var(--raise);color:var(--ink);cursor:pointer;
+}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.chip .x{color:var(--ink-soft);font-weight:700;line-height:1}
+.chip:hover .x{color:var(--danger)}
+.chip{
+  border:1px solid var(--line);border-radius:999px;padding:7px 14px;background:var(--raise);
+  cursor:pointer;font-size:13.5px;user-select:none;display:flex;align-items:center;gap:7px;
+}
+.chip .n{font-size:11px;color:var(--ink-soft);font-variant-numeric:tabular-nums}
+.chip[aria-pressed="true"]{background:var(--indigo);border-color:var(--indigo);color:#0D1016;font-weight:600}
+.chip[aria-pressed="true"] .x{color:#0D1016}
+
+.controls{display:flex;flex-direction:column;gap:18px;margin-top:18px;padding-top:18px;border-top:1px dashed var(--line)}
+.slider{width:100%;max-width:760px}
+.slabel{display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:13.5px;margin-bottom:8px}
+.slabel output{
+  background:var(--indigo-soft);color:var(--indigo);border-radius:999px;padding:3px 12px;
+  font-size:13px;font-weight:600;font-variant-numeric:tabular-nums;min-width:44px;text-align:center;
+}
+.sends{display:flex;justify-content:space-between;font-size:11px;color:var(--ink-soft);margin-top:4px;font-variant-numeric:tabular-nums}
+input[type=range]{
+  width:100%;-webkit-appearance:none;appearance:none;height:6px;border-radius:999px;
+  background:var(--line);cursor:pointer;
+}
+input[type=range]::-webkit-slider-thumb{
+  -webkit-appearance:none;width:20px;height:20px;border-radius:50%;
+  background:var(--indigo);border:3px solid var(--surface);box-shadow:0 0 0 1px var(--indigo);cursor:grab;
+}
+input[type=range]::-moz-range-thumb{
+  width:16px;height:16px;border-radius:50%;background:var(--indigo);
+  border:3px solid var(--surface);box-shadow:0 0 0 1px var(--indigo);cursor:grab;
+}
+.checks{display:flex;flex-wrap:wrap;gap:10px 26px}
+.ltr{direction:ltr;unicode-bidi:isolate;font-variant-numeric:tabular-nums}
+label.field{display:flex;flex-direction:column;gap:6px;font-size:13px;color:var(--ink-soft);font-weight:500}
+label.field input[type=number]{
+  padding:9px 10px;border:1px solid var(--line);border-radius:8px;background:var(--paper);
+  font-family:inherit;font-size:14px;color:var(--ink);width:100%;
+}
+label.check{display:flex;align-items:center;gap:9px;font-size:13.5px;cursor:pointer}
+label.check input{width:17px;height:17px;accent-color:var(--indigo);cursor:pointer}
+
+.note{padding:11px 14px;border-radius:8px;font-size:13.5px;margin-top:14px;display:none}
+.note.show{display:block}
+.note.err{background:rgba(255,122,138,.10);color:var(--danger);border:1px solid rgba(255,122,138,.30)}
+.note.ok{background:rgba(61,214,168,.10);color:var(--ok);border:1px solid rgba(61,214,168,.28)}
+
+/* results */
+.resbar{
+  display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:14px;
+  padding-bottom:18px;margin-bottom:26px;border-bottom:1px solid var(--line);
+}
+.meta{display:flex;gap:8px;flex-wrap:wrap}
+.pill{
+  background:var(--indigo-soft);color:var(--indigo);border-radius:999px;
+  padding:5px 12px;font-size:12.5px;font-weight:600;font-variant-numeric:tabular-nums;
+}
+.pill.warn{background:rgba(255,201,60,.14);color:var(--amber)}
+.nav{display:flex;align-items:center;gap:8px}
+.nav .count{font-size:13px;color:var(--ink-soft);font-variant-numeric:tabular-nums;min-width:96px;text-align:center}
+
+.card{margin-bottom:22px}
+.card:last-child{margin-bottom:0}
+.cardhead{
+  display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:8px;
+}
+.cardhead .no{
+  background:var(--indigo);color:#0D1016;border-radius:6px;padding:3px 10px;
+  font-size:12px;font-weight:600;font-variant-numeric:tabular-nums;
+}
+.cardhead .tag{font-size:12.5px;color:var(--ink-soft);font-variant-numeric:tabular-nums}
+.cardhead .tag b{color:var(--ink);font-weight:600}
+.pager{
+  display:flex;align-items:center;justify-content:center;gap:12px;
+  margin-top:24px;padding-top:18px;border-top:1px solid var(--line);
+}
+/* الشريط مخفي عمدًا: السحب متاح، لكن شريطًا ظاهرًا فوق كل جدول يشتّت القارئ */
+.gridscroll{
+  overflow-x:auto;overflow-y:hidden;
+  -webkit-overflow-scrolling:touch;
+  overscroll-behavior-x:contain;
+  scrollbar-width:none;                 /* فايرفوكس */
+}
+.gridscroll::-webkit-scrollbar{display:none}   /* كروم وسفاري */
+
+.grid{border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:var(--surface);direction:ltr}
+.ruler{display:flex;background:var(--raise);border-bottom:1px solid var(--line);padding-left:96px}
+.ruler .h{
+  flex:1;font-size:11px;color:var(--ink-soft);text-align:left;padding:6px 0 6px 6px;
+  border-left:1px solid var(--line);font-variant-numeric:tabular-nums;
+}
+.day{display:flex;border-bottom:1px solid var(--line);min-height:112px}
+.day:last-child{border-bottom:0}
+.day .name{
+  width:96px;flex:none;background:var(--raise);border-left:1px solid var(--line);
+  display:grid;place-items:center;font-size:13.5px;font-weight:600;direction:rtl;
+}
+.track{position:relative;flex:1;background-image:repeating-linear-gradient(to right,transparent 0,transparent calc(8.3333% - 1px),var(--line) calc(8.3333% - 1px),var(--line) 8.3333%)}
+.block{
+  position:absolute;top:7px;bottom:7px;border-radius:7px;padding:6px 6px;overflow:hidden;
+  border:1px solid;direction:rtl;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;text-align:center;
+}
+.block.lab{border-style:dashed}
+/* كل سطر يبقى سطرًا واحدًا؛ حجم الخط يُحسب في fitBlocks حسب اتساع البلوك */
+.block b, .block span{
+  display:block;max-width:100%;white-space:nowrap;overflow:hidden;
+  line-height:1.3;font-size:12px;
+}
+.block b{font-weight:700;margin-bottom:2px}
+.block span{opacity:.9}
+.gap{
+  position:absolute;top:24px;bottom:24px;border-radius:6px;direction:rtl;
+  background:repeating-linear-gradient(45deg,rgba(255,201,60,.07),rgba(255,201,60,.07) 5px,rgba(255,201,60,.14) 5px,rgba(255,201,60,.14) 10px);
+  border:1px dashed rgba(255,201,60,.45);display:grid;place-items:center;
+  font-size:10.5px;color:var(--amber);font-weight:600;
+}
+.freeday{
+  position:absolute;inset:0;display:grid;place-items:center;
+  color:var(--ink-soft);font-size:11.5px;opacity:.55;direction:rtl;
+}
+.empty{padding:44px 20px;text-align:center;color:var(--ink-soft);font-size:14px}
+
+@media(max-width:720px){
+  /* عرض أدنى لكل ساعة: يمنع انضغاط الكتل، ويُقرأ بالسحب الأفقي */
+  .grid{min-width:calc(64px + var(--hcols, 6) * 104px)}
+  .day{min-height:104px}
+  .day .name{width:64px;font-size:12px}
+  .ruler{padding-left:64px}
+  .ruler .h{font-size:9px}
+  .block b{font-size:10.5px}
+  .block span{font-size:9px}
+}
+.cardhead .prn{
+  margin-inline-start:auto;display:flex;align-items:center;gap:7px;
+  font-size:12px;padding:6px 13px;
+  background:transparent;color:var(--ink-soft);border:1px solid var(--line);font-weight:500;
+}
+.cardhead .prn svg{width:14px;height:14px}
+.cardhead .prn:disabled{opacity:.6}
+.cardhead .prn:hover{color:var(--indigo);border-color:var(--indigo)}
+
+#landing{
+  position:fixed;inset:0;z-index:60;overflow:auto;
+  background:
+    radial-gradient(900px 500px at 78% -8%, rgba(124,140,255,.16), transparent 60%),
+    radial-gradient(700px 460px at 12% 105%, rgba(37,211,102,.10), transparent 60%),
+    var(--paper);
+  display:grid;place-items:center;padding:44px 20px;
+}
+#landing .inner{width:100%;max-width:980px;text-align:center}
+
+.brand{
+  display:inline-flex;align-items:center;gap:10px;
+  border:1px solid var(--line);background:var(--surface);
+  border-radius:999px;padding:6px 16px;font-size:12px;color:var(--ink-soft);
+  margin-bottom:26px;
+}
+.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--indigo);box-shadow:0 0 0 4px rgba(124,140,255,.15)}
+
+#landing h1{
+  margin:0;padding-top:6px;font-size:clamp(26px,4vw,40px);font-weight:700;letter-spacing:-.4px;line-height:1.5;
+}
+#landing h1 em{
+  font-style:normal;
+  background:linear-gradient(90deg, var(--indigo), #7ee0c0);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+#landing .lead{margin:18px 0 0;font-size:17px;font-weight:600;color:var(--ink)}
+#landing .sub{margin:10px auto 0;max-width:620px;color:var(--ink-soft);font-size:14.5px;line-height:1.9}
+
+.pickline{
+  display:flex;align-items:center;gap:14px;margin:44px 0 22px;color:var(--ink);font-size:15px;font-weight:600;
+}
+.pickline::before,.pickline::after{content:"";height:1px;flex:1;background:var(--line)}
+
+.majors{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.major{
+  position:relative;overflow:hidden;cursor:pointer;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;
+  text-align:center;min-height:130px;
+  background:var(--surface);border:1px solid var(--line);border-radius:14px;
+  padding:20px 16px;color:var(--ink);font-family:inherit;
+  transition:transform .16s ease, border-color .16s, background .16s;
+}
+.major::after{
+  content:"";position:absolute;inset-inline:0;top:0;height:2px;
+  background:linear-gradient(90deg,transparent,var(--acc),transparent);
+  opacity:0;transition:opacity .18s;
+}
+.major:hover,.major:focus-visible{
+  transform:translateY(-4px);border-color:var(--acc);outline:none;
+}
+.major:hover::after,.major:focus-visible::after{opacity:1}
+
+.major .ico{
+  width:50px;height:50px;flex:none;display:grid;place-items:center;
+  border-radius:14px;background:color-mix(in srgb, var(--acc) 12%, transparent);
+  border:1px solid color-mix(in srgb, var(--acc) 30%, transparent);
+  transition:transform .2s ease;
+}
+.major:hover .ico{transform:scale(1.06) rotate(-3deg)}
+.major .ico svg{width:26px;height:26px;color:var(--acc)}
+
+.major .t{display:block;font-size:14.5px;font-weight:600;line-height:1.6}
+.major .u{display:block;margin-top:2px;font-size:11px;color:var(--ink-soft)}
+
+@media(max-width:860px){
+  .majors{grid-template-columns:1fr}
+}
+
+.majornote{
+  margin:30px auto 0;max-width:760px;
+  background:var(--surface);border:1px solid var(--line);border-radius:14px;
+  padding:20px 26px;
+  font-size:15px;line-height:2;color:var(--ink);text-align:center;
+}
+.majornote a{
+  color:#25D366;font-weight:600;text-decoration:none;
+  border-bottom:1px dashed color-mix(in srgb, #25D366 55%, transparent);
+  padding-bottom:1px;transition:border-color .15s;
+}
+.majornote a:hover{border-bottom-color:#25D366;border-bottom-style:solid}
+
+.majorbadge{
+  display:inline-flex;align-items:center;gap:8px;font-size:12px;color:var(--ink-soft);
+  border:1px solid var(--line);border-radius:999px;padding:4px 12px;background:var(--surface);
+}
+.majorbadge b{color:var(--ink);font-weight:600}
+.headtools{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.homebtn{
+  width:36px;height:36px;flex:none;display:grid;place-items:center;padding:0;
+  background:var(--surface);border:1px solid var(--line);border-radius:10px;
+  color:var(--ink-soft);cursor:pointer;
+  transition:color .15s, border-color .15s, transform .08s;
+}
+.homebtn:hover{color:var(--indigo);border-color:var(--indigo)}
+.homebtn:active{transform:translateY(1px)}
+.homebtn svg{width:18px;height:18px}
+
+.landing-foot{margin-top:52px}
+
+.privacy{
+  display:flex;align-items:center;gap:11px;margin:0;
+  max-width:680px;text-align:right;font-size:12.5px;line-height:1.8;color:var(--ink-soft);
+  background:color-mix(in srgb, #25D366 8%, var(--surface));
+  border:1px solid color-mix(in srgb, #25D366 32%, transparent);
+  border-radius:var(--radius);padding:13px 16px;
+}
+.privacy b{color:var(--ink);font-weight:600}
+.privacy .pico{
+  width:30px;height:30px;flex:none;display:grid;place-items:center;border-radius:9px;
+  background:color-mix(in srgb, #25D366 16%, transparent);color:#25D366;
+}
+.privacy .pico svg{width:18px;height:18px}
+
+.examcard{
+  background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);
+  padding:16px 18px;margin-bottom:20px;
+}
+.examcard h3{
+  display:flex;align-items:center;gap:9px;margin:0 0 12px;
+  font-size:14px;font-weight:600;color:var(--ink);
+}
+.examcard h3 svg{width:17px;height:17px;color:var(--indigo)}
+/* ===== جدول أيام الاختبارات ===== */
+.examscroll{overflow-x:auto}
+.examtable{border-collapse:collapse;font-size:13px;width:100%;min-width:max-content}
+.examtable th, .examtable td{
+  padding:10px 16px;text-align:center;border:1px solid var(--line);white-space:nowrap;
+}
+.examtable .r-course th{
+  font-size:12.5px;font-weight:600;color:var(--ink);background:var(--surface);
+}
+.examtable .r-day td{background:transparent}
+.examtable .r-day span{
+  display:inline-block;background:var(--indigo-soft);color:var(--indigo);
+  border-radius:999px;padding:3px 14px;font-size:12.5px;font-weight:600;
+  font-variant-numeric:tabular-nums;
+}
+
+/* ===== التذييل ===== */
+.support{
+  display:inline-flex;align-items:center;gap:10px;text-decoration:none;
+  background:#25D366;color:#06281A;border-radius:999px;
+  padding:11px 22px;font-size:14px;font-weight:700;
+  box-shadow:0 4px 14px rgba(37,211,102,.22);
+  transition:transform .12s ease, box-shadow .16s;
+}
+.support:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(37,211,102,.3)}
+.support:active{transform:translateY(0)}
+.support svg{width:19px;height:19px;flex:none}
+
+footer.site{
+  margin-top:56px;padding-top:34px;border-top:1px solid var(--line);
+  display:flex;flex-direction:column;align-items:center;gap:22px;text-align:center;
+}
+.quote{
+  position:relative;max-width:560px;font-size:15px;line-height:1.8;color:var(--ink);
+  padding:0 26px;
+}
+.quote::before,.quote::after{
+  position:absolute;top:-6px;font-size:30px;line-height:1;color:var(--indigo);opacity:.5;font-family:Georgia,serif;
+}
+.quote::before{content:"”";right:0}
+.quote::after{content:"“";left:0}
+
+.social{display:flex;align-items:center;justify-content:center;gap:12px}
+.social .grp{display:flex;align-items:center;justify-content:center;gap:12px}
+.social a{
+  width:42px;height:42px;display:grid;place-items:center;
+  background:var(--surface);border:1px solid var(--line);border-radius:50%;
+  color:var(--ink-soft);transition:color .15s, border-color .15s, transform .1s;
+}
+.social a:hover{color:var(--indigo);border-color:var(--indigo);transform:translateY(-2px)}
+.social svg{width:18px;height:18px}
+
+.social a.wa:hover{color:#25D366;border-color:#25D366}
+
+.supporthint{
+  margin:-14px 0 0;width:100%;max-width:520px;
+  text-align:right;font-size:11.5px;color:var(--ink-soft);
+}
+
+.privacy{
+  display:flex;align-items:center;gap:11px;margin:0;max-width:680px;
+  padding:12px 16px;border-radius:var(--radius);
+  background:color-mix(in srgb, #25D366 8%, var(--surface));
+  border:1px solid color-mix(in srgb, #25D366 32%, transparent);
+  font-size:13px;line-height:1.8;color:var(--ink-soft);text-align:right;
+}
+.privacy b{color:var(--ink);font-weight:600}
+.privacy .pico{
+  width:32px;height:32px;flex:none;display:grid;place-items:center;border-radius:9px;
+  background:color-mix(in srgb, #25D366 14%, transparent);color:#25D366;
+}
+.privacy .pico svg{width:19px;height:19px}
+
+.privacy{
+  display:flex;align-items:center;gap:11px;text-align:right;
+  max-width:680px;margin:0;padding:12px 16px;
+  font-size:12.5px;line-height:1.8;color:var(--ink-soft);
+  background:color-mix(in srgb, #25D366 8%, var(--surface));
+  border:1px solid color-mix(in srgb, #25D366 35%, transparent);
+  border-radius:var(--radius);
+}
+.privacy b{color:var(--ink);font-weight:600}
+.privacy .pico{
+  width:30px;height:30px;flex:none;display:grid;place-items:center;border-radius:9px;
+  background:color-mix(in srgb, #25D366 16%, transparent);color:#25D366;
+}
+.privacy .pico svg{width:17px;height:17px}
+
+.disclaimer{
+  max-width:680px;font-size:12.5px;line-height:1.85;color:var(--ink-soft);
+  background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+  padding:14px 18px;
+}
+.disclaimer b{color:var(--ink);font-weight:600}
+
+.copy{
+  display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:center;
+  font-size:12.5px;color:var(--ink-soft);
+}
+.copy .dev{color:var(--ink);font-weight:600}
+.copy .yr{font-variant-numeric:tabular-nums;direction:ltr;unicode-bidi:isolate}
+.copy .en{direction:ltr;unicode-bidi:isolate;letter-spacing:.2px}
+.copy .sepbar{opacity:.45}
+
+@media print{
+  footer.site{display:none}
+
+  body{background:#fff;color:#111}
+  .step,header.top .stamp,.nav,.pager,.noprint,.resbar{display:none !important}
+  .wrap{padding:0;max-width:none}
+  #results{display:block !important;border:0;box-shadow:none;padding:0;background:#fff}
+  .grid{background:#fff;border-color:#bbb}
+  .ruler,.day .name{background:#f1f1f1;color:#111}
+  .ruler .h,.day{border-color:#ddd}
+  .block{background:#fff !important;color:#111 !important;border-width:1.5px}
+  .block b{color:#111 !important}
+  .gap{background:#f7f7f7;border-color:#ccc;color:#666}
+  .cardhead .no{background:#111;color:#fff}
+  .cardhead .tag,.cardhead .tag b{color:#111}
+  /* عند طباعة جدول بعينه نخفي البقية */
+  body.print-one .card:not(.printing){display:none !important}
+  .card{page-break-inside:avoid;break-inside:avoid;margin-bottom:0}
+}
+</style>
+</head>
+<body>
+<div id="landing">
+  <div class="inner">
+    <h1><em>مُولِّد الجداول الدراسية</em></h1>
+    <p class="lead">تخلص من عناء التنسيق يدويًا!</p>
+    <p class="sub">ألصق تفاصيل مقرراتك المطروحة هنا، واحصل فورًا على جداول متكاملة بلا تعارض زمني، مرتبة تلقائيًا وفقًا لأيام الدوام وأوقات الفراغ الأنسب لك.</p>
+
+    <div class="pickline">اختر تخصصك</div>
+
+    <div class="majors">
+      <button type="button" class="major" data-major="هندسة الحاسب الآلي والشبكات" style="--acc:#7C8CFF">
+        <span class="ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="4" r="2"/><circle cx="4" cy="19" r="2"/><circle cx="20" cy="19" r="2"/>
+            <circle cx="12" cy="12" r="2.4"/>
+            <path d="M12 6v3.6M10.3 13.7 5.6 17.4M13.7 13.7l4.7 3.7"/>
+            <path d="M6 19h12" stroke-dasharray="2 2.5"/>
+          </svg>
+        </span>
+        <span class="t">هندسة الحاسب الآلي والشبكات</span>
+        <span class="u">جامعة جازان</span>
+      </button>
+
+      <button type="button" class="major" data-major="علوم الحاسب" style="--acc:#4ADE9B">
+        <span class="ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="6" y="6" width="12" height="12" rx="2.5"/>
+            <path d="M10.2 10.5 8.7 12l1.5 1.5M13.8 10.5 15.3 12l-1.5 1.5"/>
+            <path d="M9 3v3M15 3v3M9 18v3M15 18v3M3 9h3M3 15h3M18 9h3M18 15h3"/>
+          </svg>
+        </span>
+        <span class="t">علوم الحاسب</span>
+        <span class="u">جامعة جازان</span>
+      </button>
+
+      <button type="button" class="major" data-major="تقنية المعلومات" style="--acc:#F0B85C">
+        <span class="ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="4" width="18" height="5.5" rx="1.8"/>
+            <rect x="3" y="14.5" width="18" height="5.5" rx="1.8"/>
+            <path d="M6.6 6.75h.01M6.6 17.25h.01"/>
+            <path d="M10 6.75h6M10 17.25h6"/>
+            <path d="M12 9.5v5"/>
+          </svg>
+        </span>
+        <span class="t">تقنية المعلومات</span>
+        <span class="u">جامعة جازان</span>
+      </button>
+    </div>
+
+    <p class="majornote">
+      الأداة تعمل بدقة عالية مع التخصصات المذكورة أعلاه.
+      إذا لم تجد تخصصك وترغب في إضافته، يسعدنا
+      <a href="https://wa.me/966532338006" target="_blank" rel="noopener">تواصلك معنا</a>
+      لندعمه فورًا!
+    </p>
+
+<footer class="site landing-foot">
+  <p class="quote">الجدول الدراسي المنظم هو الخطوة الأولى نحو معدل أكاديمي متميز</p>
+
+  <nav class="social">
+
+    <!-- حسابات المطوّر: أقصى اليسار -->
+    <span class="grp">
+      <a href="https://www.linkedin.com/in/hamad-alqadhi-99b642410" target="_blank" rel="noopener" aria-label="LinkedIn" title="LinkedIn">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9h4v12H3zM9 9h3.8v1.7h.05c.53-.95 1.83-1.95 3.75-1.95 4 0 4.4 2.5 4.4 5.75V21h-4v-5.6c0-1.35-.03-3.1-1.9-3.1-1.9 0-2.2 1.45-2.2 2.99V21H9z"/></svg>
+      </a>
+      <a href="https://x.com/7amad_0004" target="_blank" rel="noopener" aria-label="X" title="X">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.53 3h3.02l-6.6 7.54L21.75 21h-6.06l-4.75-6.2L5.5 21H2.47l7.06-8.07L2.25 3h6.2l4.29 5.67zm-1.06 16.2h1.67L7.6 4.7H5.8z"/></svg>
+      </a>
+      <a href="https://t.me/H_3R3" target="_blank" rel="noopener" aria-label="Telegram" title="Telegram">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.9 4.3 18.7 19.4c-.24 1.06-.87 1.32-1.77.82l-4.9-3.6-2.36 2.27c-.26.26-.48.48-.99.48l.35-4.98 9.06-8.19c.4-.35-.08-.54-.6-.2L6.28 12.8l-4.83-1.5c-1.05-.33-1.07-1.05.22-1.56l18.9-7.28c.87-.32 1.64.2 1.33 1.84z"/></svg>
+      </a>
+    </span>
+  </nav>
+
+  <a class="support" href="https://wa.me/966532338006" target="_blank" rel="noopener">
+    <span>الدعم الفني</span>
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2A9.9 9.9 0 0 0 2.1 11.9c0 1.75.46 3.45 1.34 4.95L2 22l5.3-1.39a9.9 9.9 0 0 0 4.74 1.2h.01a9.9 9.9 0 0 0 9.9-9.9A9.9 9.9 0 0 0 12.04 2zm0 18.05h-.01a8.2 8.2 0 0 1-4.19-1.15l-.3-.18-3.11.82.83-3.04-.2-.31a8.2 8.2 0 1 1 6.98 3.86zm4.5-6.15c-.25-.13-1.46-.72-1.68-.8-.23-.08-.39-.12-.56.13-.16.25-.64.8-.79.97-.14.16-.29.18-.54.06-.25-.13-1.04-.38-1.98-1.22-.73-.65-1.23-1.46-1.37-1.71-.14-.25-.02-.38.11-.51.11-.11.25-.29.37-.43.13-.15.17-.25.25-.41.08-.17.04-.31-.02-.44-.06-.13-.56-1.35-.77-1.84-.2-.48-.4-.42-.56-.43h-.48c-.16 0-.43.06-.65.31-.23.25-.86.84-.86 2.05s.88 2.38 1 2.54c.12.17 1.73 2.64 4.19 3.7.59.26 1.04.41 1.4.52.59.19 1.12.16 1.55.1.47-.07 1.46-.6 1.66-1.18.21-.58.21-1.07.15-1.18-.06-.1-.23-.16-.48-.29z"/></svg>
+  </a>
+
+  <p class="privacy">
+    <span class="pico">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 2.8 5 5.6v5.1c0 4.3 2.9 8.3 7 9.5 4.1-1.2 7-5.2 7-9.5V5.6z"/>
+        <path d="m9.2 11.9 1.9 1.9 3.7-3.9"/>
+      </svg>
+    </span>
+    <span><b>بياناتك آمنة تمامًا:</b> معالجة البيانات تتم محليًا داخل متصفحك بالكامل، ولا يتم إرسالها إلى أي خادم خارجي.</span>
+  </p>
+
+  <p class="disclaimer">
+    <b>إخلاء مسؤولية:</b> هذا الموقع أداة برمجية مساعدة ومستقلة لتسهيل تنسيق الجداول فقط،
+    ولا يغني عن مراجعة وتأكيد التسجيل عبر البوابة الأكاديمية الرسمية للجامعة.
+  </p>
+
+  <p class="copy">
+    <span class="dev">حمد القاضي</span>
+    <bdi class="yr">© 2026</bdi>
+    <span class="sepbar">|</span>
+    <bdi class="en">Hamad Alqadhi</bdi>
+  </p>
+</footer>
+  </div>
+</div>
+
+<div class="wrap" id="app" hidden>
+
+<header class="top">
+  <div class="headtools">
+    <span class="majorbadge" id="majorBadge" hidden><b id="majorName"></b></span>
+    <button type="button" class="homebtn" id="changeMajor" title="العودة إلى الصفحة الرئيسية" aria-label="الصفحة الرئيسية">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M3.2 10.6 12 3.6l8.8 7"/>
+        <path d="M5.5 9.6V20h13V9.6"/>
+        <path d="M9.8 20v-5.4h4.4V20"/>
+      </svg>
+    </button>
+  </div>
+
+  <div class="headmain">
+    <h1>مُولِّد الجداول الدراسية</h1>
+    <p>ألصق تفاصيل مقرراتك المطروحة هنا، اختر موادك، واحصل فورًا على جداول متكاملة بلا تعارض زمني، مرتبة تلقائيًا وفقًا لأيام الدوام وأوقات الفراغ الأنسب لك.</p>
+  </div>
+</header>
+
+<details class="guide noprint">
+  <summary>
+    <span class="gicon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="9"/><path d="M12 16v-4.5M12 8.2h.01"/>
+      </svg>
+    </span>
+    <span>خطوات استخراج البيانات وتوليد جدولك</span>
+    <span class="caret">▾</span>
+  </summary>
+
+  <ol class="steps">
+    <li>
+      <b>سجّل الدخول</b>
+      <span>ادخل إلى حسابك في النظام الأكاديمي للجامعة.</span>
+    </li>
+    <li>
+      <b>افتح صفحة المقررات المطروحة وفق الخطة</b>
+    </li>
+    <li>
+      <b>اعرض مصدر الصفحة</b>
+      <span>اضغط <kbd>Ctrl</kbd> + <kbd>U</kbd>، أو اضغط بزر الفأرة الأيمن على مكان فارغ واختر «عرض مصدر الصفحة».</span>
+    </li>
+    <li>
+      <b>انسخ كود الجدول</b>
+      <span>
+        ابحث داخل صفحة الأكواد بـ <kbd>Ctrl</kbd> + <kbd>F</kbd> عن عبارة <em>رمز المقرر</em>،
+        ثم حدّد وانسخ النص كاملًا من بداية الجدول:
+      </span>
+      <code>&lt;thead&gt;
+&lt;tr&gt;
+&lt;th class="HEADING" scope="col"&gt;رمز المقرر&lt;/th&gt;</code>
+      <span>حتى نهايته عند:</span>
+      <code>&lt;/tbody&gt;
+&lt;/table&gt;</code>
+    </li>
+    <li>
+      <b>ألصق وولّد</b>
+      <span>عُد إلى هنا، وألصق الكود في الصندوق أدناه، ثم اختر موادك واضغط «ولّد الجداول».</span>
+    </li>
+  </ol>
+</details>
+
+<section class="step noprint">
+  <h2>
+    <span class="num">1</span>
+    <span>ألصق كود تفاصيل مقرراتك المطروحة هنا</span>
+    <span class="stamp" id="stamp">لم تُقرأ أي شعبة بعد</span>
+  </h2>
+  <textarea id="html" spellcheck="false" placeholder="&lt;thead&gt;
+&lt;tr&gt;
+&lt;th class=&quot;HEADING&quot; scope=&quot;col&quot;&gt;رمز المقرر&lt;/th&gt;
+&lt;th class=&quot;HEADING&quot; scope=&quot;col&quot;&gt;اسم المقرر&lt;/th&gt;
+&lt;th class=&quot;HEADING&quot; scope=&quot;col&quot;&gt;الشعبة&amp;nbsp;&lt;/th&gt;
+&lt;th class=&quot;HEADING&quot; scope=&quot;col&quot;&gt;&amp;nbsp;النشاط&amp;nbsp;&lt;/th&gt;
+&lt;th class=&quot;HEADING&quot; scope=&quot;col&quot;&gt;&amp;nbsp;الساعات&amp;nbsp;&lt;/th&gt;
+&lt;th class=&quot;HEADING&quot; scope=&quot;col&quot;&gt;&amp;nbsp;الحالة&amp;nbsp;&lt;/th&gt;
+&lt;th class=&quot;HEADING&quot; scope=&quot;col&quot;&gt;التفاصيل&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+.
+.
+.
+.
+&lt;/tbody&gt;
+&lt;/table&gt;"></textarea>
+  <div class="row">
+    <button id="parse">استخرج الشعب</button>
+  </div>
+  <div class="note err" id="parseErr"></div>
+  <div class="note ok" id="parseOk"></div>
+</section>
+
+<section class="step noprint" id="pick" style="display:none">
+  <h2><span class="num">2</span> اختر موادك واضبط الشروط</h2>
+  <p class="hint">افتح القائمة وأشّر على المواد التي تنوي تسجيلها.</p>
+
+  <div class="dd">
+    <button type="button" class="ddbtn" id="ddbtn" aria-expanded="false">
+      <span id="ddlabel">اختر المواد</span>
+      <span class="caret">▾</span>
+    </button>
+    <div class="ddpanel" id="ddpanel" hidden></div>
+  </div>
+  <div class="chips" id="picked"></div>
+
+  <div class="controls">
+    <div class="slider">
+      <div class="slabel">
+        <span>الحد الأقصى لساعات البريك في الأسبوع</span>
+        <output id="maxBreakOut">0</output>
+      </div>
+      <input type="range" id="maxBreak" min="0" max="100" step="1" value="0">
+      <div class="sends"><span>0</span><span>100</span></div>
+    </div>
+
+    <div class="checks">
+      <label class="check">
+        <input type="checkbox" id="ignoreBreak">
+        احتساب <bdi class="ltr">(12:00 PM – 1:00 PM)</bdi> ضمن ساعات البريك
+      </label>
+      <label class="check">
+        <input type="checkbox" id="keepClosed">
+        تضمين الشعب المغلقة ضمن الجداول المقترحة
+      </label>
+    </div>
+  </div>
+
+  <div class="row">
+    <button id="gen">ولّد الجداول</button>
+  </div>
+  <div class="note err" id="genErr"></div>
+</section>
+
+<section class="step" id="results" style="display:none">
+  <div id="exams"></div>
+
+  <div class="resbar">
+    <div class="meta" id="meta"></div>
+    <div class="nav noprint">
+      <select id="sortBy" title="ترتيب النتائج">
+        <option value="breaks">الأقل بريكات</option>
+        <option value="days">الأقل أيامًا</option>
+      </select>
+    </div>
+  </div>
+
+  <div id="canvas"></div>
+
+  <div class="pager noprint">
+    <button class="ghost" id="prev">السابق</button>
+    <span class="count" id="count"></span>
+    <button class="ghost" id="next">التالي</button>
+  </div>
+</section>
+
+<footer class="site">
+  <p class="quote">الجدول الدراسي المنظم هو الخطوة الأولى نحو معدل أكاديمي متميز</p>
+
+  <nav class="social">
+
+    <!-- حسابات المطوّر: أقصى اليسار -->
+    <span class="grp">
+      <a href="https://www.linkedin.com/in/hamad-alqadhi-99b642410" target="_blank" rel="noopener" aria-label="LinkedIn" title="LinkedIn">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9h4v12H3zM9 9h3.8v1.7h.05c.53-.95 1.83-1.95 3.75-1.95 4 0 4.4 2.5 4.4 5.75V21h-4v-5.6c0-1.35-.03-3.1-1.9-3.1-1.9 0-2.2 1.45-2.2 2.99V21H9z"/></svg>
+      </a>
+      <a href="https://x.com/7amad_0004" target="_blank" rel="noopener" aria-label="X" title="X">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.53 3h3.02l-6.6 7.54L21.75 21h-6.06l-4.75-6.2L5.5 21H2.47l7.06-8.07L2.25 3h6.2l4.29 5.67zm-1.06 16.2h1.67L7.6 4.7H5.8z"/></svg>
+      </a>
+      <a href="https://t.me/H_3R3" target="_blank" rel="noopener" aria-label="Telegram" title="Telegram">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.9 4.3 18.7 19.4c-.24 1.06-.87 1.32-1.77.82l-4.9-3.6-2.36 2.27c-.26.26-.48.48-.99.48l.35-4.98 9.06-8.19c.4-.35-.08-.54-.6-.2L6.28 12.8l-4.83-1.5c-1.05-.33-1.07-1.05.22-1.56l18.9-7.28c.87-.32 1.64.2 1.33 1.84z"/></svg>
+      </a>
+    </span>
+  </nav>
+
+  <a class="support" href="https://wa.me/966532338006" target="_blank" rel="noopener">
+    <span>الدعم الفني</span>
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2A9.9 9.9 0 0 0 2.1 11.9c0 1.75.46 3.45 1.34 4.95L2 22l5.3-1.39a9.9 9.9 0 0 0 4.74 1.2h.01a9.9 9.9 0 0 0 9.9-9.9A9.9 9.9 0 0 0 12.04 2zm0 18.05h-.01a8.2 8.2 0 0 1-4.19-1.15l-.3-.18-3.11.82.83-3.04-.2-.31a8.2 8.2 0 1 1 6.98 3.86zm4.5-6.15c-.25-.13-1.46-.72-1.68-.8-.23-.08-.39-.12-.56.13-.16.25-.64.8-.79.97-.14.16-.29.18-.54.06-.25-.13-1.04-.38-1.98-1.22-.73-.65-1.23-1.46-1.37-1.71-.14-.25-.02-.38.11-.51.11-.11.25-.29.37-.43.13-.15.17-.25.25-.41.08-.17.04-.31-.02-.44-.06-.13-.56-1.35-.77-1.84-.2-.48-.4-.42-.56-.43h-.48c-.16 0-.43.06-.65.31-.23.25-.86.84-.86 2.05s.88 2.38 1 2.54c.12.17 1.73 2.64 4.19 3.7.59.26 1.04.41 1.4.52.59.19 1.12.16 1.55.1.47-.07 1.46-.6 1.66-1.18.21-.58.21-1.07.15-1.18-.06-.1-.23-.16-.48-.29z"/></svg>
+  </a>
+
+  <p class="privacy">
+    <span class="pico">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 2.8 5 5.6v5.1c0 4.3 2.9 8.3 7 9.5 4.1-1.2 7-5.2 7-9.5V5.6z"/>
+        <path d="m9.2 11.9 1.9 1.9 3.7-3.9"/>
+      </svg>
+    </span>
+    <span><b>بياناتك آمنة تمامًا:</b> معالجة البيانات تتم محليًا داخل متصفحك بالكامل، ولا يتم إرسالها إلى أي خادم خارجي.</span>
+  </p>
+
+  <p class="disclaimer">
+    <b>إخلاء مسؤولية:</b> هذا الموقع أداة برمجية مساعدة ومستقلة لتسهيل تنسيق الجداول فقط،
+    ولا يغني عن مراجعة وتأكيد التسجيل عبر البوابة الأكاديمية الرسمية للجامعة.
+  </p>
+
+  <p class="copy">
+    <span class="dev">حمد القاضي</span>
+    <bdi class="yr">© 2026</bdi>
+    <span class="sepbar">|</span>
+    <bdi class="en">Hamad Alqadhi</bdi>
+  </p>
+</footer>
+
+</div>
+
+
+<script>
+/* ===========================================================================
+   مُولِّد الجداول الدراسية — حقوق التأليف © 2026 حمد القاضي (Hamad Alqadhi)
+
+   يمرّ العمل بثلاث مراحل:
+     الأولى   — الاستخراج: قراءة صفوف الشعب نصيًّا من كود الصفحة، وتحويل
+                المواعيد إلى دقائق منذ منتصف الليل ليسهل حسابها.
+     الثانية  — الربط: ضمّ شعب العملي إلى شعب النظري التابعة لها، وفحص
+                تعارض فترات الاختبار النهائي قبل التوليد.
+     الثالثة  — التوليد: تجريب تركيبات الشعب بالتراجع (Backtracking)، وإسقاط
+                ما تعارض زمنيًّا، ثم استبعاد ما تجاوز حدّ البريك المسموح.
+   =========================================================================== */
+
+/* ===================== ثوابت عامة ===================== */
+const DAY_NAMES = {1:"الأحد",2:"الاثنين",3:"الثلاثاء",4:"الأربعاء",5:"الخميس"};
+const DAY_START = 480, DAY_END = 1440;      // 8:00 AM → 12:00 AM (منتصف الليل)
+
+let RAW = [];          // الصفوف الخام المتراكمة من كل اللصقات
+let NOTIME = [];       // شعب بلا مواعيد معلنة
+let PARSED = [];       // كل الشعب بعد التنظيف
+let COURSES = [];      // أسماء المواد
+let SELECTED = new Set();
+let ALL = [];          // كل النتائج قبل الفرز
+let SCHEDULES = [];    // النتائج بعد الفرز
+let PAGE = 0;
+let COLORS = {};
+
+/* ===================== المرحلة الأولى: الاستخراج والتنظيف ===================== */
+/* تُقرأ الصفوف نصيًّا لا عبر محلّل DOM؛ إذ إن المتصفح يُسقط وسوم <tr> و<td>
+   إذا لُصقت خارج جدول، فتضيع البيانات. والقراءة النصية تقبل الصفحة كاملة،
+   أو صفوفًا مقتطعة، أو حتى صفًّا واحدًا ناقص الإغلاق. */
+
+const FIELD = {
+  section:    /(^|:)section$/i,
+  instructor: /(^|:)instructor$/i,
+  exam:       /(^|:)examPeriod$/i,
+};
+const ACTIVITY = /^(نظر[يى]|عمل[يى]|تمارين|ندوة|مناقشة|سريري|ميداني)$/;
+
+const normActivity = a => String(a).replace(/ى/g,"ي").trim();
+
+
+const clean = h => String(h)
+  .replace(/<[^>]*>/g, "")
+  .replace(/&nbsp;/gi, " ").replace(/&amp;/gi, "&")
+  .replace(/&lt;/gi, "<").replace(/&gt;/gi, ">").replace(/&quot;/gi, '"')
+  .replace(/\s+/g, " ").trim();
+
+const attr = (tag, name) => {
+  const m = tag.match(new RegExp(name + '\\s*=\\s*"([^"]*)"', "i"))
+        || tag.match(new RegExp(name + "\\s*=\\s*'([^']*)'", "i"));
+  return m ? m[1] : "";
+};
+
+// تستخرج قيم الحقول المخفية (المحاضر، المواعيد، فترة الاختبار) من الصف
+function readFields(chunk){
+  const f = {instructor:"", section:"", exam:"", hasSection:false};
+  for(const m of chunk.matchAll(/<input\b[^>]*>/gi)){
+    const tag = m[0];
+    const key = attr(tag, "name") || attr(tag, "id");
+    const v   = attr(tag, "value");
+    if(FIELD.section.test(key)){ f.section = v; f.hasSection = true; }
+    else if(FIELD.instructor.test(key)) f.instructor = v;
+    else if(FIELD.exam.test(key))       f.exam = v;
+  }
+  return f;
+}
+
+// تُحدَّد الأعمدة انطلاقًا من خلية «النشاط» لا من ترتيب ثابت، فيحتمل الكود
+// اختلاف الأعمدة أو زيادتها بين صفحات النظام.
+function readColumns(cells){
+  let a = cells.findIndex(c => ACTIVITY.test(normActivity(c)));
+  if(a === -1){
+    if(cells.length < 5) return null;
+    a = cells.length - 3;   // احتياط: الترتيب المعروف من نهاية الأعمدة
+  }
+  const at = i => cells[i] !== undefined ? cells[i] : "";
+
+  const groupNum = parseInt(at(a-1).replace(/\D/g, ""), 10);
+  if(isNaN(groupNum)) return null;
+
+  return {
+    code:     at(a-3),
+    name:     at(a-2) || at(a-3),
+    groupNum,
+    activity: normActivity(at(a)) || "نظري",
+    hours:    parseFloat(at(a+1)) || 0,
+    status:   at(a+2),
+  };
+}
+
+function parseHTML(raw){
+  raw = String(raw || "").trim();
+  if(!raw) throw new Error("المربع فارغ. ألصق كود تفاصيل مقرراتك المطروحة أولًا.");
+  if(!/<\s*t[rd]\b/i.test(raw))
+    throw new Error("لم يتم اكتشاف كود HTML.");
+
+  const flat = [], noTime = [];
+  let seen = 0;
+
+  // نقسّم على وسم <tr> ونعالج كل صف على حدة — بلا حاجة إلى <table> حوله
+  for(const chunk of raw.split(/<tr\b/i).slice(1)){
+    const f = readFields(chunk);
+    if(!f.hasSection) continue;          // صف لا يخص شعبة
+    seen++;
+
+    const cells = [...chunk.matchAll(/<td\b[^>]*>([\s\S]*?)<\/td>/gi)].map(m => clean(m[1]));
+    const info  = readColumns(cells);
+    if(!info) continue;
+
+    const course = info.code ? `${info.code} · ${info.name}` : info.name;
+    const base   = {...info, course, instructor: clean(f.instructor), exam: f.exam.trim()};
+
+    if(!f.section.trim()){ noTime.push(base); continue; }   // شعبة بلا مواعيد معلنة
+
+    let gotTime = false;
+    for(const part of f.section.split("@n")){
+      const timeM = part.match(/@t\s*([^@]+?)\s*@r/);
+      if(!timeM) continue;
+      const days = (part.split("@t")[0].match(/\d+/g) || []).map(Number).filter(d => d>=1 && d<=5);
+      if(!days.length) continue;
+
+      const span = parseTime(timeM[1]);
+      if(!span) continue;
+
+      const roomM = part.match(/@r\s*([^@]*)/);
+      const room  = roomM ? roomM[1].trim() : "";
+      gotTime = true;
+
+      // تُعامل المحاضرة الأقصر من ساعة معاملة الساعة الكاملة (٨:٠٠–٨:٥٠ ← ٨:٠٠–٩:٠٠)،
+      // لأن حساب البريك يقوم على فترات الساعة الكاملة، فلا تُحسب المحاضرة القصيرة فراغًا.
+      const start = span.start;
+      const end   = (span.end - span.start < 60) ? span.start + 60 : span.end;
+
+      // تُقسَّم فترة العملي (ساعتان) إلى ساعتين منفصلتين، ثم تُطرح دقيقة من كل
+      // نهاية؛ إذ تمنع هذه الدقيقة اعتبار محاضرتين متلاصقتين متعارضتين.
+      const chunks = (end - start === 120)
+        ? [[start, start+60], [start+60, end]]
+        : [[start, end]];
+
+      for(const [st,en] of chunks)
+        flat.push({...base, room, days, start:st, end:en-1});
+    }
+    if(!gotTime) noTime.push(base);
+  }
+
+  if(!seen)
+    throw new Error("لم يتم العثور على أي شعبة.");
+  if(!flat.length && !noTime.length)
+    throw new Error(`لقيت ${seen} شعبة لكن تعذّرت قراءة أعمدتها (رمز المقرر، الشعبة، النشاط…).`);
+
+  return {flat, noTime, seen};
+}
+
+function parseTime(s){
+  const clean = String(s).replace(/–|—/g,"-").replace(/ص/g,"AM").replace(/م/g,"PM").trim();
+  const [a,b] = clean.split(/\s*-\s*/);
+  let st = toMin(a), en = toMin(b);
+  if(st == null || en == null) return null;
+
+  // المحاضرة المنتهية عند منتصف الليل تُقرأ ساعتها صفرًا، فتُعدّ نهايةً لليوم لا بدايةً له
+  if(en <= st) en += 24*60;
+
+  const dur = en - st;
+  if(dur <= 0 || dur > 8*60) return null;   // مدة غير منطقية
+  return {start:st, end:en};
+}
+
+function toMin(t){
+  if(!t) return null;
+  const m = String(t).trim().match(/(\d{1,2}):(\d{2})\s*(AM|PM)/i);
+  if(!m) return null;
+  let h = +m[1] % 12;
+  if(/PM/i.test(m[3])) h += 12;
+  return h*60 + (+m[2]);
+}
+
+// تُجمع فترات الشعبة الواحدة في سجلّ واحد موزَّع على أيام الأسبوع
+function collapse(rows){
+  const map = new Map();
+  for(const r of rows){
+    const key = [r.course, r.groupNum, r.activity, r.room, r.instructor].join("|");
+    if(!map.has(key)) map.set(key, {
+      course:r.course, code:r.code, name:r.name,
+      groupNum:r.groupNum, activity:r.activity, hours:r.hours, status:r.status,
+      room:r.room, instructor:r.instructor, exam:r.exam, unified:r.groupNum,
+      days:{1:[],2:[],3:[],4:[],5:[]}
+    });
+    const g = map.get(key);
+    for(const d of r.days) g.days[d].push([r.start, r.end]);
+  }
+  const list = [...map.values()];
+  for(const g of list) for(let d=1; d<=5; d++) g.days[d].sort((x,y)=>x[0]-y[0]);
+  return list;
+}
+
+// تُربط شعب العملي بشعب النظري بالترتيب التصاعدي (الأولى بالأولى)، فتصير
+// كل شعبة نظري ومعملها حزمة واحدة لا تنفصل عند التوليد.
+function unify(list){
+  for(const course of new Set(list.map(g=>g.course))){
+    const th = [...new Set(list.filter(g=>g.course===course && g.activity==="نظري").map(g=>g.groupNum))].sort((a,b)=>a-b);
+    const lb = [...new Set(list.filter(g=>g.course===course && g.activity==="عملي").map(g=>g.groupNum))].sort((a,b)=>a-b);
+    for(let i=0; i<Math.min(th.length, lb.length); i++)
+      list.filter(g=>g.course===course && g.groupNum===lb[i]).forEach(g=>g.unified = th[i]);
+  }
+  return list;
+}
+
+/* ===================== المرحلة الثانية: الربط والفحص ===================== */
+function officialSlots(countNoon){
+  const slots = [];
+  for(let h = DAY_START/60; h < DAY_END/60; h++){
+    if(h===12 && !countNoon) continue;
+    slots.push([h*60, h*60+59]);
+  }
+  return slots;
+}
+
+function examConflict(rows, courses){
+  const byPeriod = new Map();
+  for(const c of courses){
+    for(const p of new Set(rows.filter(r=>r.course===c && r.exam).map(r=>r.exam))){
+      if(!byPeriod.has(p)) byPeriod.set(p, new Set());
+      byPeriod.get(p).add(c);
+    }
+  }
+  // كل فترة اجتمعت فيها أكثر من مادة = تعارض
+  const clashes = [];
+  for(const [period, set] of byPeriod)
+    if(set.size > 1) clashes.push({period, courses:[...set]});
+
+  clashes.sort((a,b) => (+a.period || 0) - (+b.period || 0));
+  return clashes;
+}
+
+// فترة الاختبار المعلنة لمادة (قد تكون أكثر من واحدة)
+function examOf(course){
+  const p = [...new Set(PARSED.filter(r=>r.course===course && r.exam).map(r=>r.exam))];
+  return p.sort((a,b)=>(+a||0)-(+b||0));
+}
+
+function buildOptions(rows, courses){
+  const opts = {};
+  for(const c of courses){
+    const cr = rows.filter(r=>r.course===c);
+    const need = cr.some(r=>r.activity==="عملي") ? ["نظري","عملي"] : ["نظري"];
+    const byUnified = new Map();
+    for(const r of cr){
+      if(!byUnified.has(r.unified)) byUnified.set(r.unified, []);
+      byUnified.get(r.unified).push(r);
+    }
+    const list = [];
+    for(const [u, pack] of byUnified){
+      const acts = new Set(pack.map(r=>r.activity));
+      if(!need.every(a=>acts.has(a))) continue;
+      const times = {1:[],2:[],3:[],4:[],5:[]};
+      for(const r of pack) for(let d=1; d<=5; d++) times[d].push(...r.days[d]);
+      list.push({unified:u, rows:pack, times});
+    }
+    opts[c] = list;
+  }
+  return opts;
+}
+
+const conflict = (cur, add) => {
+  for(let d=1; d<=5; d++)
+    for(const [s1,e1] of cur[d])
+      for(const [s2,e2] of add[d])
+        if(s1 < e2 && s2 < e1) return true;
+  return false;
+};
+const merged = (cur, add) => {
+  const o = {};
+  for(let d=1; d<=5; d++) o[d] = cur[d].concat(add[d]);
+  return o;
+};
+
+function countBreaks(pack, slots){
+  let breaks = 0;
+  for(let d=1; d<=5; d++){
+    const cls = [];
+    for(const opt of pack) cls.push(...opt.times[d]);
+    if(!cls.length) continue;
+    cls.sort((a,b)=>a[0]-b[0]);
+    const first = cls[0][0], last = Math.max(...cls.map(c=>c[1]));
+    for(const [ss,se] of slots){
+      if(se <= first || ss >= last) continue;
+      if(!cls.some(([cs,ce]) => cs <= ss && ce >= se)) breaks++;
+    }
+  }
+  return breaks;
+}
+
+/* ===================== المرحلة الثالثة: التوليد بالتراجع ===================== */
+function countDays(pack){
+  let n = 0;
+  for(let d=1; d<=5; d++)
+    if(pack.some(opt => opt.times[d].length)) n++;
+  return n;
+}
+
+const HARD_CAP = 20000;   // حدٌّ أقصى يقي المتصفح من التجمّد، لا قيدٌ على النتائج
+
+function generate(courses, opts, maxBreak, slots){
+  const results = [];
+  const order = [...courses].sort((a,b)=>opts[a].length - opts[b].length);
+  let capped = false;
+
+  (function walk(i, cur, pack){
+    if(results.length >= HARD_CAP){ capped = true; return; }
+    if(i === order.length){
+      const b = countBreaks(pack, slots);
+      if(b <= maxBreak) results.push({pack:[...pack], breaks:b, days:countDays(pack)});
+      return;
+    }
+    for(const opt of opts[order[i]]){
+      if(conflict(cur, opt.times)) continue;
+      pack.push(opt);
+      walk(i+1, merged(cur, opt.times), pack);
+      pack.pop();
+      if(results.length >= HARD_CAP){ capped = true; return; }
+    }
+  })(0, {1:[],2:[],3:[],4:[],5:[]}, []);
+
+  return {results, capped};
+}
+
+// «الأقل بريكات»: البريك أولًا ثم الأيام   ·   «الأقل أيامًا»: الأيام أولًا ثم البريك
+function sortSchedules(list, by){
+  return [...list].sort((a,b) => by === "days"
+    ? (a.days - b.days) || (a.breaks - b.breaks)
+    : (a.breaks - b.breaks) || (a.days - b.days));
+}
+
+function hexToRgb(h){ h=h.replace("#",""); return [0,2,4].map(i=>parseInt(h.slice(i,i+2),16)); }
+function shade(hex, f){ const [r,g,b]=hexToRgb(hex); return `rgb(${Math.round(r*f)},${Math.round(g*f)},${Math.round(b*f)})`; }
+function tint(hex, f){ const [r,g,b]=hexToRgb(hex); const m=c=>Math.round(c+(255-c)*f); return `rgb(${m(r)},${m(g)},${m(b)})`; }
+function alpha(hex, a){ const [r,g,b]=hexToRgb(hex); return `rgba(${r},${g},${b},${a})`; }
+
+// نولّد لونًا لكل مادة بتوزيع متساوٍ على عجلة الألوان — فأيًّا كان عددها، لا تتجاور درجتان
+function hslToHex(h, s, l){
+  s/=100; l/=100;
+  const k = n => (n + h/30) % 12;
+  const a = s * Math.min(l, 1-l);
+  const f = n => l - a * Math.max(-1, Math.min(k(n)-3, Math.min(9-k(n), 1)));
+  const to = v => Math.round(255*v).toString(16).padStart(2,"0");
+  return `#${to(f(0))}${to(f(8))}${to(f(4))}`;
+}
+
+function buildColors(courses){
+  const n = Math.max(courses.length, 1);
+  const map = {};
+  courses.forEach((c, i) => {
+    const hue = Math.round((i * 360 / n + 8) % 360);
+    map[c] = hslToHex(hue, 78, 66);   // درجات فاتحة مشبعة تقرأ جيدًا على خلفية داكنة
+  });
+  return map;
+}
+
+// تُدمج ساعتا العملي المتتاليتان في كتلة واحدة عند العرض فحسب، لا في الحساب
+function mergeIntervals(list){
+  if(!list.length) return [];
+  const s = [...list].sort((a,b)=>a[0]-b[0]);
+  const out = [s[0].slice()];
+  for(const [a,b] of s.slice(1)){
+    const last = out[out.length-1];
+    if(a <= last[1] + 1) last[1] = Math.max(last[1], b);
+    else out.push([a,b]);
+  }
+  return out;
+}
+
+const fmt = m => {
+  const h = Math.floor(m/60) % 24, mm = String(m%60).padStart(2,"0");
+  const ap = h < 12 ? "AM" : "PM";
+  return `${h%12||12}:${mm} ${ap}`;
+};
+const shortName = n => { const p=String(n).trim().split(/\s+/); return p.length>=2 ? p[0]+" "+p[p.length-1] : String(n); };
+
+// تُشتق النافذة الزمنية من الجدول نفسه — من ساعة أولى المحاضرات إلى ساعة
+// آخرها — فلا تظهر أعمدة فارغة قبل الدوام ولا بعده.
+function timeWindow(res){
+  let lo = Infinity, hi = -Infinity;
+  for(const opt of res.pack)
+    for(let d=1; d<=5; d++)
+      for(const [st,en] of opt.times[d]){ if(st < lo) lo = st; if(en+1 > hi) hi = en+1; }
+
+  if(lo === Infinity) return {t0:DAY_START, t1:DAY_START+120};
+  const t0 = Math.floor(lo/60)*60;
+  const t1 = Math.ceil(hi/60)*60;
+  return {t0, t1: Math.max(t1, t0+60)};
+}
+
+/* ===================== عرض الجداول ===================== */
+
+function renderSchedule(res, number){
+  const slots = officialSlots($("ignoreBreak").checked);
+  const {t0, t1} = timeWindow(res);
+  const hours = (t1 - t0) / 60;
+  const pct = m => ((m - t0) / (t1 - t0)) * 100;
+
+  const card = document.createElement("div");
+  card.className = "card";
+
+  const head = document.createElement("div");
+  head.className = "cardhead";
+  head.innerHTML =
+    `<span class="no">جدول ${number}</span>` +
+    `<span class="tag">ساعات البريك: <b>${res.breaks}</b></span>` +
+    `<span class="tag">أيام الدوام: <b>${res.days}</b></span>`;
+
+  const dl = document.createElement("button");
+  dl.type = "button";
+  dl.className = "prn noprint";
+  dl.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v10.5M8.2 11l3.8 3.8 3.8-3.8"/><path d="M5 19h14"/></svg> تنزيل صورة الجدول`;
+  dl.onclick = () => downloadSchedule(res, number, dl);
+  head.appendChild(dl);
+
+  card.appendChild(head);
+
+  // على الجوال تنضغط الأعمدة حتى تُقرأ بصعوبة، فيُمنح كل ساعة عرضًا أدنى
+  // ويُسحب الجدول أفقيًا بدل ضغط محتواه.
+  const scroller = document.createElement("div");
+  scroller.className = "gridscroll";
+
+  const wrap = document.createElement("div");
+  wrap.className = "grid";
+  wrap.style.setProperty("--hcols", hours);
+
+  const step = 100 / hours;
+  const ruler = document.createElement("div");
+  ruler.className = "ruler";
+  for(let h = t0/60; h < t1/60; h++)
+    ruler.innerHTML += `<div class="h">${fmt(h*60).replace(":00","")}</div>`;
+  wrap.appendChild(ruler);
+
+  for(let d=1; d<=5; d++){
+    const row = document.createElement("div");
+    row.className = "day";
+    row.innerHTML = `<div class="name">${DAY_NAMES[d]}</div>`;
+
+    const track = document.createElement("div");
+    track.className = "track";
+    track.style.backgroundImage =
+      `repeating-linear-gradient(to right, transparent 0, transparent calc(${step}% - 1px), var(--line) calc(${step}% - 1px), var(--line) ${step}%)`;
+
+    const all = [];
+    for(const opt of res.pack) all.push(...opt.times[d]);
+
+    if(!all.length){
+      const off = document.createElement("div");
+      off.className = "freeday";
+      off.textContent = "لا محاضرات";
+      track.appendChild(off);
+    }else{
+      // البريكات بين أول محاضرة وآخرها
+      const first = Math.min(...all.map(x=>x[0])), last = Math.max(...all.map(x=>x[1]));
+      for(const [ss,se] of slots){
+        if(se <= first || ss >= last) continue;
+        if(all.some(([cs,ce]) => cs <= ss && ce >= se)) continue;
+        const g = document.createElement("div");
+        g.className = "gap";
+        g.style.left = pct(ss)+"%";
+        g.style.width = (pct(se+1) - pct(ss))+"%";
+        g.textContent = "بريك";
+        track.appendChild(g);
+      }
+
+        for(const opt of res.pack){
+        for(const r of opt.rows){
+          const ivals = r.activity === "عملي" ? mergeIntervals(r.days[d]) : r.days[d];
+          for(const [st,en] of ivals){
+            const base = COLORS[r.course] || "#888";
+            const lab  = r.activity === "عملي";
+            const el = document.createElement("div");
+            el.className = "block" + (lab ? " lab" : "");
+            el.style.left = pct(st)+"%";
+            el.style.width = (pct(en+1) - pct(st))+"%";
+            el.style.background = alpha(base, lab ? .22 : .13);
+            el.style.borderColor = alpha(base, lab ? .75 : 1);
+            el.style.color = tint(base, .45);
+            el.title = `${r.course} — ${r.activity} — شعبة ${r.groupNum}\n${fmt(st)} → ${fmt(en+1)}\n${r.room}\n${r.instructor}`;
+            el.innerHTML = `<b>${r.name || r.course}</b>
+              <span>${r.activity}</span>
+              <span>${r.groupNum}</span>
+              <span>${r.room || "—"}</span>
+              <span>${shortName(r.instructor)}</span>`;
+            track.appendChild(el);
+          }
+        }
+      }
+    }
+    row.appendChild(track);
+    wrap.appendChild(row);
+  }
+
+  scroller.appendChild(wrap);
+  card.appendChild(scroller);
+  return card;
+}
+
+/* ترسم الجدول على لوحة رسم (canvas) وتنزّله صورةً.
+   الرسم يدويّ لا التقاطٌ للصفحة، فلا يحتاج أي مكتبة خارجية، وتخرج الصورة
+   بدقّة مضاعفة صالحة للعرض على الشاشات عالية الكثافة. */
+const IMG = {
+  scale: 2,                 // مضاعف الدقّة
+  width: 1500,
+  pad: 28,
+  headH: 74,
+  rulerH: 44,
+  dayH: 118,
+  nameW: 140,
+  font: '"IBM Plex Sans Arabic","Segoe UI",Tahoma,sans-serif',
+};
+
+function downloadSchedule(res, number, btn){
+  const old = btn.innerHTML;
+  btn.disabled = true;
+  btn.textContent = "جارٍ التجهيز…";
+
+  try{
+    const canvas = drawScheduleCanvas(res, number);
+    canvas.toBlob(blob => {
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `جدول-${number}.png`;
+      a.click();
+      URL.revokeObjectURL(url);
+
+      btn.innerHTML = old;
+      btn.disabled = false;
+    }, "image/png");
+  }catch(err){
+    btn.innerHTML = old;
+    btn.disabled = false;
+    alert("تعذّر إنشاء الصورة: " + err.message);
+  }
+}
+
+function drawScheduleCanvas(res, number){
+  const {t0, t1} = timeWindow(res);
+  const hours = (t1 - t0) / 60;
+  const slots = officialSlots($("ignoreBreak").checked);
+
+  const W = IMG.width;
+  const H = IMG.pad*2 + IMG.headH + IMG.rulerH + IMG.dayH*5;
+
+  const cv = document.createElement("canvas");
+  cv.width  = W * IMG.scale;
+  cv.height = H * IMG.scale;
+  const c = cv.getContext("2d");
+  c.scale(IMG.scale, IMG.scale);
+  c.textBaseline = "middle";
+  c.direction = "rtl";
+
+  const css = getComputedStyle(document.documentElement);
+  const col = n => css.getPropertyValue(n).trim();
+  const PAPER = col("--paper") || "#0E1116";
+  const SURF  = col("--surface") || "#161A22";
+  const LINE  = col("--line") || "#2A313D";
+  const INK   = col("--ink") || "#E6E9EF";
+  const SOFT  = col("--ink-soft") || "#9AA3B2";
+
+  c.fillStyle = PAPER;
+  c.fillRect(0, 0, W, H);
+
+  c.fillStyle = INK;
+  c.font = `700 24px ${IMG.font}`;
+  c.textAlign = "right";
+  c.fillText(`جدول رقم ${number}`, W - IMG.pad, IMG.pad + 18);
+
+  c.fillStyle = SOFT;
+  c.font = `500 15px ${IMG.font}`;
+  c.fillText(`ساعات البريك: ${res.breaks}   ·   أيام الدوام: ${res.days}`, W - IMG.pad, IMG.pad + 48);
+
+  c.textAlign = "left";
+  c.fillStyle = SOFT;
+  c.font = `500 13px ${IMG.font}`;
+  c.fillText("مُولِّد الجداول الدراسية", IMG.pad, IMG.pad + 18);
+
+  const gx = IMG.pad, gy = IMG.pad + IMG.headH;
+  const gw = W - IMG.pad*2;
+  const gh = IMG.rulerH + IMG.dayH*5;
+
+  c.fillStyle = SURF;
+  roundRect(c, gx, gy, gw, gh, 10);
+  c.fill();
+  c.strokeStyle = LINE;
+  c.lineWidth = 1;
+  c.stroke();
+
+  // عمود الأيام إلى اليسار، والمسار الزمني إلى يمينه — كما في الصفحة تمامًا
+  const nameX  = gx;
+  const trackX = gx + IMG.nameW;
+  const trackW = gw - IMG.nameW;
+  const pxOf   = m => trackX + ((m - t0) / (t1 - t0)) * trackW;
+
+  c.fillStyle = SOFT;
+  c.font = `500 12px ${IMG.font}`;
+  c.textAlign = "left";
+  for(let h = t0/60; h < t1/60; h++){
+    const x = pxOf(h * 60);
+    c.fillText(fmt(h*60).replace(":00",""), x + 8, gy + IMG.rulerH/2);
+    if(h > t0/60){
+      c.strokeStyle = LINE;
+      c.beginPath(); c.moveTo(x, gy); c.lineTo(x, gy + gh); c.stroke();
+    }
+  }
+  c.strokeStyle = LINE;
+  c.beginPath(); c.moveTo(gx, gy + IMG.rulerH); c.lineTo(gx + gw, gy + IMG.rulerH); c.stroke();
+
+  // خط فاصل يفصل عمود الأيام عن المسار الزمني
+  c.beginPath(); c.moveTo(trackX, gy); c.lineTo(trackX, gy + gh); c.stroke();
+
+  for(let d = 1; d <= 5; d++){
+    const top = gy + IMG.rulerH + (d-1) * IMG.dayH;
+
+    if(d > 1){
+      c.strokeStyle = LINE;
+      c.beginPath(); c.moveTo(gx, top); c.lineTo(gx + gw, top); c.stroke();
+    }
+
+      c.fillStyle = INK;
+    c.font = `600 16px ${IMG.font}`;
+    c.textAlign = "center";
+    c.fillText(DAY_NAMES[d], nameX + IMG.nameW/2, top + IMG.dayH/2);
+
+    const all = [];
+    for(const opt of res.pack) all.push(...opt.times[d]);
+
+    if(!all.length){
+      c.fillStyle = SOFT;
+      c.font = `500 13px ${IMG.font}`;
+      c.fillText("لا محاضرات", trackX + trackW/2, top + IMG.dayH/2);
+      continue;
+    }
+
+    const first = Math.min(...all.map(x => x[0])), last = Math.max(...all.map(x => x[1]));
+    for(const [ss, se] of slots){
+      if(se <= first || ss >= last) continue;
+      if(all.some(([cs,ce]) => cs <= ss && ce >= se)) continue;
+
+      const x1 = pxOf(ss), x2 = pxOf(se+1);
+      c.fillStyle = "rgba(240,184,92,.14)";
+      roundRect(c, x1 + 4, top + 26, (x2 - x1) - 8, IMG.dayH - 52, 6);
+      c.fill();
+      c.strokeStyle = "rgba(240,184,92,.5)";
+      c.setLineDash([4,4]); c.stroke(); c.setLineDash([]);
+
+      c.fillStyle = "#F0B85C";
+      c.font = `600 12px ${IMG.font}`;
+      c.textAlign = "center";
+      c.fillText("بريك", (x1 + x2)/2, top + IMG.dayH/2);
+    }
+
+    // المحاضرات
+    for(const opt of res.pack){
+      for(const r of opt.rows){
+        const ivals = r.activity === "عملي" ? mergeIntervals(r.days[d]) : r.days[d];
+        for(const [st, en] of ivals){
+          const base = COLORS[r.course] || "#7C8CFF";
+          const x1 = pxOf(st), x2 = pxOf(en+1);
+          const w = x2 - x1;
+
+          c.fillStyle = alpha(base, r.activity === "عملي" ? .30 : .17);
+          roundRect(c, x1 + 5, top + 8, w - 10, IMG.dayH - 16, 8);
+          c.fill();
+          c.strokeStyle = r.activity === "عملي" ? shade(base, .75) : base;
+          c.lineWidth = 1.5;
+          c.stroke();
+          c.lineWidth = 1;
+
+          // خمسة أسطر متمركزة، مع تصغير الخط إن ضاق العرض
+          const lines = [
+            {t: r.name || r.course,        f: 700, s: 14},
+            {t: r.activity,                f: 500, s: 12},
+            {t: String(r.groupNum),        f: 500, s: 12},
+            {t: r.room || "—",             f: 500, s: 12},
+            {t: shortName(r.instructor),   f: 500, s: 12},
+          ];
+          const avail = w - 16;
+          c.textAlign = "center";
+          const cx = (x1 + x2) / 2;
+          let y = top + IMG.dayH/2 - 30;
+
+          for(const ln of lines){
+            let size = ln.s;
+            c.font = `${ln.f} ${size}px ${IMG.font}`;
+            while(c.measureText(ln.t).width > avail && size > 7){
+              size -= 0.5;
+              c.font = `${ln.f} ${size}px ${IMG.font}`;
+            }
+            c.fillStyle = ln.f === 700 ? tint(base, .55) : tint(base, .35);
+            c.fillText(ln.t, cx, y);
+            y += 15;
+          }
+        }
+      }
+    }
+  }
+
+  return cv;
+}
+
+function roundRect(c, x, y, w, h, r){
+  c.beginPath();
+  c.moveTo(x + r, y);
+  c.arcTo(x + w, y,     x + w, y + h, r);
+  c.arcTo(x + w, y + h, x,     y + h, r);
+  c.arcTo(x,     y + h, x,     y,     r);
+  c.arcTo(x,     y,     x + w, y,     r);
+  c.closePath();
+}
+
+/* يُمنح كل سطر أكبر حجم خط يسعه عرض الكتلة دون أن ينزل إلى سطر ثانٍ، ثم
+   تُقلَّص الأسطر جميعها بنسبة واحدة إن تجاوز مجموعها ارتفاع الكتلة. */
+const FIT = {
+  base: 12,                        // الحجم المرجعي للقياس
+  title: {min: 8,  max: 15},       // اسم المقرر
+  line:  {min: 7,  max: 12.5},     // النشاط، الشعبة، القاعة، المحاضر
+};
+
+function fitBlocks(root){
+  for(const el of root.querySelectorAll(".block")){
+    const lines = [...el.children];
+    if(!lines.length) continue;
+
+    const availW = el.clientWidth - 12;        // ناقص الحشو الجانبي
+    if(availW <= 0) continue;
+
+    // ١) كل سطر يأخذ أكبر حجم يسعه عرضًا
+    for(const line of lines){
+      line.style.fontSize = FIT.base + "px";
+      const w = line.scrollWidth || 1;
+      const lim = line.tagName === "B" ? FIT.title : FIT.line;
+      const size = Math.min(lim.max, Math.max(lim.min, FIT.base * (availW / w)));
+      line.style.fontSize = size.toFixed(2) + "px";
+    }
+
+    // ٢) إن فاض الارتفاع، نقلّص الجميع بنفس النسبة
+    const overflow = el.scrollHeight - el.clientHeight;
+    if(overflow > 0){
+      const ratio = el.clientHeight / el.scrollHeight;
+      for(const line of lines){
+        const cur = parseFloat(line.style.fontSize);
+        const lim = line.tagName === "B" ? FIT.title : FIT.line;
+        line.style.fontSize = Math.max(lim.min, cur * ratio).toFixed(2) + "px";
+      }
+    }
+  }
+}
+
+/* أيام الاختبارات: كل ثلاث فترات متتالية تقع في يوم واحد،
+   فالفترات ١–٣ في اليوم الأول، و٤–٦ في الثاني، وهكذا. */
+const examDayOf = period => Math.ceil(Number(period) / 3);
+
+function renderExams(){
+  const box = $("exams");
+  box.innerHTML = "";
+
+  const rows = [];
+  for(const c of SELECTED){
+    for(const p of examOf(c)) rows.push({course: c, period: Number(p)});
+  }
+  if(!rows.length) return;
+
+  rows.sort((a, b) => a.period - b.period);
+
+  // صفّان أفقيان: المقررات في الأعلى، وأيام اختبارها تحتها مباشرة
+  const nameOf = course => (PARSED.find(x => x.course === course)?.name) || course;
+  const head = rows.map(r => `<th>${nameOf(r.course)}</th>`).join("");
+  const days = rows.map(r => `<td><span>اليوم ${examDayOf(r.period)}</span></td>`).join("");
+
+  box.innerHTML = `
+    <div class="examcard">
+      <h3>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="4" y="5" width="16" height="16" rx="2.5"/><path d="M4 10h16M9 3v4M15 3v4"/>
+        </svg>
+        توزيع الاختبارات النهائية
+      </h3>
+      <div class="examscroll">
+        <table class="examtable">
+          <tbody>
+            <tr class="r-course">${head}</tr>
+            <tr class="r-day">${days}</tr>
+          </tbody>
+        </table>
+      </div>
+    </div>`;
+}
+
+const PER_PAGE = 10;
+
+function showPage(){
+  const pages = Math.max(1, Math.ceil(SCHEDULES.length / PER_PAGE));
+  PAGE = Math.min(Math.max(PAGE, 0), pages - 1);
+
+  const canvas = $("canvas");
+  canvas.innerHTML = "";
+
+  const from = PAGE * PER_PAGE;
+  const slice = SCHEDULES.slice(from, from + PER_PAGE);
+  slice.forEach((res, i) => canvas.appendChild(renderSchedule(res, from + i + 1)));
+
+  const hours = [...SELECTED].reduce((sum,c)=>{
+    const r = PARSED.find(x=>x.course===c && x.activity==="نظري") || PARSED.find(x=>x.course===c);
+    return sum + (r ? r.hours : 0);
+  }, 0);
+
+  $("meta").innerHTML =
+    `<span class="pill">${SCHEDULES.length} جدول صالح</span>` +
+    `<span class="pill">الساعات الأكاديمية: ${hours}</span>`;
+
+  renderExams();
+  fitBlocks(canvas);
+
+  $("count").textContent = `صفحة ${PAGE+1} من ${pages} · جداول ${from+1}–${from+slice.length}`;
+  $("prev").disabled = PAGE === 0;
+  $("next").disabled = PAGE >= pages - 1;
+}
+
+/* ===================== ربط المنطق بعناصر الواجهة ===================== */
+const $ = id => document.getElementById(id);
+
+function courseLabel(course){
+  const r = PARSED.find(x => x.course === course);
+  if(!r) return course;
+  return r.code ? `${r.name} - ${r.code}` : r.name;
+}
+
+
+/* ===== خطط التخصصات =====
+   كل مستوى: [اسم المستوى, [[رمز المقرر, اسمه], ...]]
+   الاسم يُترك فارغًا حين لا يكون معروفًا؛ المطابقة حينها بالرمز فقط. */
+const PLANS = {
+  "هندسة الحاسب الآلي والشبكات": [
+    ["المستوى الأول",  [["101سلم-2",""],["101نجل-6",""],["102عرب-2",""],["105ريض",""],["111علم",""]]],
+    ["المستوى الثاني", [["102نجل",""],["106ريض",""],["107ريض",""],["112عال",""]]],
+    ["المستوى الثالث", [["102سلم-2",""],["204فيز",""],["211شبك-3",""],["213عال",""],["234ريض-4",""]]],
+    ["المستوى الرابع", [["205فيز-3",""],["212شبك-3",""],["233شبك-3",""],["246ريض-3",""],["326ريض-3",""]]],
+    ["المستوى الخامس", [["211نظم-3",""],["262ريض",""],["313شبك-3",""],["322شبك-3",""],["331شبك",""],["334شبك",""]]],
+    ["المستوى السادس", [["321شبك-3",""],["323شبك",""],["335شبك-3",""],["341شبك-3",""],["353شبك-3",""]]],
+    ["المستوى السابع", [["432شبك-3",""],["442شبك",""],["451شبك-3",""],["452شبك-3",""],["454شبك-3",""],["461شبك-3",""]]],
+    ["المستوى الثامن", [["322نظم-3",""],["443شبك",""],["444شبك-3",""],["455شبك-3",""],["476شبك-4","التدريب التعاوني"],["4ااشبك-3","مقرر اختياري 1"]]],
+    ["المستوى التاسع", [["524شبك-3",""],["562شبك-3",""],["571شبك-3",""],["574شبك-4",""],["ب ب 4شبك-3","مقرر اختياري 2"],["4ببشبك-3","مقرر اختياري 2"]]],
+    ["المستوى العاشر", [["572شبك-2",""],["573شبك-3",""],["575شبك-4",""],["أأ5شبك-3","مقرر اختياري 3"],["**5شبك-3","مقرر اختياري 3"]]],
+  ],
+
+  "علوم الحاسب": [
+    ["المستوى الأول",  [["101سلم-2","ثقافة إسلامية 1"],["101نجل","لغة انجليزية 1"],["102عرب-2","التحرير العربي"],["105ريض","تفاضل وتكامل"],["111عال","مقدمة في الحوسبة"]]],
+    ["المستوى الثاني", [["101ذكاء","مقدمة في الذكاء الاصطناعي"],["102نجل","لغة انجليزية 2"],["106ريض","جبر المصفوفات"],["107ريض","الرياضيات المتقطعة"],["112عال","برمجة 1"]]],
+    ["المستوى الثالث", [["102سلم-2","ثقافة إسلامية 2"],["204فيز","اساسيات الفيزياء 1"],["211تقم","مفاهيم وتصميم قواعد البيانات"],["213عال","برمجة 2"],["262ريض","الإحصاء و الاحتمالات"]]],
+    ["المستوى الرابع", [["205فيز-3","اساسيات الفيزياء -2"],["212تقم","نظم إدارة قواعد البيانات"],["214عال","البرمجة الغرضية"],["231عال","التصميم الرقمي"],["251تقم","اتصالات البيانات وشبكات الحاسب"]]],
+    ["المستوى الخامس", [["315عال","برمجة المواقع الإلكترونية"],["321تقم","تفاعل الإنسان مع الحاسب"],["321عال","الخوارزميات وهياكل البيانات"],["326ريض-3","الجبر الخطي"],["332عال","معمارية الحاسب"]]],
+    ["المستوى السادس", [["316عال-3","اساسيات لغات البرمجة"],["322عال-3","تصميم وتحليل الخوارزميات"],["323عال","امن وسرية الحاسب"],["324عال","نظرية الرسم بالحاسب وتطبيقاته"],["333عال","نظم التشغيل"],["371عال-3","هندسة البرمجيات"]]],
+    ["المستوى السابع", [["417عال","تطوير تطبيقات المؤسسات"],["434عال-3","الحوسبة المتوازية والموزعة"],["441عال-3","الذكاء الإصطناعي"],["452عال","الحوسبة السحابية"],["453عال-3","علوم البيانات"]]],
+    ["المستوى الثامن", [["451عال-3","نمذجة ومحاكات البيانات"],["454عال-3","مخازن ومناجم البيانات"],["461عال","الرسم بالحاسب"],["472عال-3","إدارة مشاريع البرمجيات"],["481عال-3","التدريب التعاوني"],["411عال-3","مقرر اختياري 1"]]],
+    ["المستوى التاسع", [["525عال-3","التشفير"],["535عال","نظرية الحوسبة"],["555عال-3","الحوسبة المتنقلة"],["582عال-3","مشروع التخرج (المرحلة-1)"],["593عال-1","ندوة"],["ب 5عال-3","مقرر اختياري 2"],["5ببعال-3","مقرر اختياري 2"]]],
+    ["المستوى العاشر", [["556عال","إنترنت الأشياء"],["583عال","مشروع التخرج (المرحلة-2)"],["591عال","الحاسب و أخلاقيات المهنة"],["592عال","روح المبادرة والإبتكار"],["511عال","مواضيع مختارة في علوم الحاسب"],["ج 5عال-3","مقرر اختياري 3"],["5ججعال-3","مقرر اختياري 3"]]],
+  ],
+
+  "تقنية المعلومات": [
+    ["المستوى الأول",  [["101سلم-2","ثقافة إسلامية 1"],["101نجل","لغة انجليزية 1"],["102عرب-2","التحرير العربي"],["105ريض","تفاضل وتكامل"],["111عال","مقدمة في الحوسبة"]]],
+    ["المستوى الثاني", [["102نجل","لغة انجليزية 2"],["106ريض","جبر المصفوفات"],["107ريض","الرياضيات المتقطعة"],["112عال","برمجة 1"]]],
+    ["المستوى الثالث", [["102سلم-2","ثقافة إسلامية 2"],["204فيز","اساسيات الفيزياء 1"],["211تقم","مفاهيم وتصميم قواعد البيانات"],["213عال","برمجة 2"],["262ريض","الإحصاء و الاحتمالات"]]],
+    ["المستوى الرابع", [["212تقم","نظم إدارة قواعد البيانات"],["214عال","البرمجة الغرضية"],["241تقم","تطبيقات الوسائط المتعددة"],["251تقم","اتصالات البيانات وشبكات الحاسب"],["252تقم","التصميم الرقمي ومعمارية الحاسب"]]],
+    ["المستوى الخامس", [["313تقم","مقدمة في علم البيانات"],["321تقم","تفاعل الإنسان مع الحاسب"],["321عال","الخوارزميات وهياكل البيانات"],["322تقم","هندسة البرمجيات"],["331تقم","أساسيات أمن تقنية المعلومات"],["342تقم","تقنيات الويب"]]],
+    ["المستوى السادس", [["323تقم","إدارة مشاريع تقنية المعلومات"],["332تقم","التشفير وأمن البيانات"],["333عال","نظم التشغيل"],["343تقم","تطوير تطبيقات الموبايل"],["353تقم","التقنيات اللاسلكية"],["361تقم","التدريب التعاوني"],["أأ3تقم-3","مقرر اختياري 1"]]],
+    ["المستوى السابع", [["411شبك","أمن الشبكات"],["424تقم","التصميم التفاعلي"],["425تقم","مشروع التخرج (المرحلة 1)"],["452عال","الحوسبة السحابية"],["454تقم","إدارة النظم"],["ب ب 4تقم-3","مقرر اختياري 2"]]],
+    ["المستوى الثامن", [["426تقم","تكامل ومعمارية النظم"],["427تقم","مشروع التخرج (المرحلة 2)"],["455تقم","تصميم وإدارة مراكز البيانات"],["456تقم","إنترنت الأشياء"],["462تقم","أخلاقيات الحاسب والمجتمع"],["ج ج 4تقم-3","مقرر اختياري 3"]]],
+  ],
+};
+
+const OTHER_LEVEL = "مستويات أخرى";
+
+// توحيد النص: مسافات، ألف بأشكالها، ياء، تاء مربوطة، وعلامات الترقيم
+const normText = t => String(t || "")
+  .replace(/\s+/g, "")
+  .replace(/[أإآٱ]/g, "ا")
+  .replace(/ى/g, "ي")
+  .replace(/ة/g, "ه")
+  .replace(/[ـ.،_'"()\-–—*]/g, "")
+  .trim();
+
+const normCode = normText;
+
+/* قسم المقرر: آخر مقطع حروف في الرمز، منزوعًا منه حروف الاختياري.
+   "262ريض" ← ريض   ·   "4ااشبك-3" ← شبك   ·   "ب 5عال-3" ← عال */
+const DEPT_4 = new Set(["ذكاء"]);
+function deptOf(code){
+  const runs = normCode(code).match(/[\u0621-\u064A]+/g) || [];
+  const run = runs.length ? runs[runs.length - 1] : "";
+  if(!run) return "";
+  if(DEPT_4.has(run)) return run;
+  return run.length > 3 ? run.slice(-3) : run;
+}
+
+/* التوزيع على المستويات:
+   ١) الرمز هو الفيصل.
+   ٢) إن لم يُطابق الرمز، يُطابق الاسم بشرط أن يكون قسم المقرر مطابقًا
+      لقسم مقرر الخطة الذي يحمل الاسم نفسه — لأن الاسم الواحد يتكرر بين
+      التخصصات برموز وأقسام مختلفة ومحتوى مختلف (مثل «مقرر اختياري 1»).
+   ٣) ما لا يطابق ← «مستويات أخرى»، فلا تُحذف أي مادة. */
+function groupByLevel(courses){
+  const plan = PLANS[MAJOR];
+  if(!plan) return [[null, courses]];
+
+  const byCode = new Map();          // رمز ← رقم المستوى
+  const byName = new Map();          // اسم ← [{level, dept}]
+  plan.forEach(([, pairs], i) => {
+    for(const [code, name] of pairs){
+      byCode.set(normCode(code), i);
+      if(name){
+        const key = normText(name);
+        if(!byName.has(key)) byName.set(key, []);
+        byName.get(key).push({level: i, dept: deptOf(code)});
+      }
+    }
+  });
+
+  const buckets = plan.map(([label]) => [label, []]);
+  const other = [OTHER_LEVEL, []];
+
+  for(const course of courses){
+    const row  = PARSED.find(r => r.course === course);
+    const code = normCode(row?.code);
+    const name = normText(row?.name);
+
+    let i = -1;
+
+    if(byCode.has(code)){
+      i = byCode.get(code);
+    }else if(byName.has(name)){
+      const dept = deptOf(code);
+      const hit  = byName.get(name).find(e => e.dept && e.dept === dept);
+      if(hit) i = hit.level;
+    }
+
+    (i >= 0 ? buckets[i][1] : other[1]).push(course);
+  }
+
+  const out = buckets.filter(b => b[1].length);
+  if(other[1].length) out.push(other);
+  return out;
+}
+
+/* ===== صفحة اختيار التخصص ===== */
+/* ===== اختيار التخصص ===== */
+let MAJOR = "";
+for(const btn of document.querySelectorAll(".major")){
+  btn.onclick = () => {
+    MAJOR = btn.dataset.major;
+    $("majorName").textContent = MAJOR;
+    $("majorBadge").hidden = false;
+    $("landing").style.display = "none";
+    $("app").hidden = false;
+    window.scrollTo(0,0);
+  };
+}
+$("changeMajor").onclick = () => {
+  $("landing").style.display = "grid";
+  $("app").hidden = true;
+  window.scrollTo(0,0);
+};
+const note = (id, msg) => { const n=$(id); n.textContent=msg; n.classList.toggle("show", !!msg); };
+const noteHTML = (id, html) => { const n=$(id); n.innerHTML=html; n.classList.toggle("show", !!html); };
+
+$("parse").onclick = () => {
+  note("parseErr",""); note("parseOk","");
+  try{
+    const {flat, noTime, seen} = parseHTML($("html").value);
+
+    RAW = flat;
+    NOTIME = noTime;
+    PARSED  = unify(collapse(RAW));
+    COURSES = [...new Set(PARSED.map(r=>r.course))].sort((a,b)=>a.localeCompare(b,"ar"));
+    COLORS  = buildColors(COURSES);
+    SELECTED = new Set();
+    ALL = []; SCHEDULES = [];
+
+    $("stamp").textContent = `${PARSED.length} شعبة · ${COURSES.length} مادة`;
+
+    let msg = `تم استخراج ${COURSES.length} مادة (${PARSED.length} شعبة). اختر موادك من القائمة.`;
+    if(NOTIME.length){
+      const names = [...new Set(NOTIME.map(x=>x.name))];
+      msg += ` استُبعدت ${NOTIME.length} شعبة بلا مواعيد معلنة (${names.slice(0,2).join("، ")}${names.length>2 ? "…" : ""}) — سجّلها يدويًا.`;
+    }
+    note("parseOk", msg);
+
+    renderCourses();
+    $("pick").style.display = "";
+    $("results").style.display = "none";
+    $("pick").scrollIntoView({behavior:"smooth", block:"start"});
+  }catch(err){
+    note("parseErr", err.message);
+    $("pick").style.display = "none";
+  }
+};
+
+function renderCourses(){
+  const panel = $("ddpanel");
+  panel.innerHTML = "";
+
+  for(const [levelLabel, list] of groupByLevel(COURSES)){
+    if(levelLabel){
+      const head = document.createElement("div");
+      head.className = "ddgroup";
+      head.innerHTML = `<span>${levelLabel}</span><span class="c">${list.length}</span>`;
+      panel.appendChild(head);
+    }
+
+    for(const c of list){
+      const n = new Set(PARSED.filter(r=>r.course===c).map(r=>r.unified)).size;
+      const ex = examOf(c);
+
+      const label = document.createElement("label");
+      const box = document.createElement("input");
+      box.type = "checkbox";
+      box.checked = SELECTED.has(c);
+      box.onchange = () => { box.checked ? SELECTED.add(c) : SELECTED.delete(c); syncPicked(); };
+
+      const text = document.createElement("span");
+      text.className = "ddtxt";
+      text.innerHTML =
+        `<span class="ddname">${courseLabel(c)}</span>` +
+        `<span class="ddmeta">عدد الشعب: ${n}</span>`;
+
+      const exam = document.createElement("span");
+      exam.className = "ddexam" + (ex.length ? "" : " none");
+      exam.innerHTML = `<span class="lbl">فترة الاختبار</span><span class="val">${ex.length ? ex.join("، ") : "—"}</span>`;
+
+      label.appendChild(box);
+      label.appendChild(text);
+      label.appendChild(exam);
+      panel.appendChild(label);
+    }
+  }
+  syncPicked();
+}
+
+function syncPicked(){
+  $("ddlabel").textContent = SELECTED.size
+    ? `${SELECTED.size} مادة مختارة`
+    : "اختر المواد";
+
+  const box = $("picked");
+  box.innerHTML = "";
+  for(const c of SELECTED){
+    const chip = document.createElement("button");
+    chip.type = "button";
+    chip.className = "chip";
+    chip.setAttribute("aria-pressed","true");
+    chip.innerHTML = `${courseLabel(c)} <span class="x">×</span>`;
+    chip.title = "إزالة";
+    chip.onclick = () => { SELECTED.delete(c); renderCourses(); };
+    box.appendChild(chip);
+  }
+}
+
+$("ddbtn").onclick = () => {
+  const open = $("ddpanel").hidden;
+  $("ddpanel").hidden = !open;
+  $("ddbtn").setAttribute("aria-expanded", String(open));
+};
+document.addEventListener("click", e => {
+  if(!e.target.closest(".dd")){
+    $("ddpanel").hidden = true;
+    $("ddbtn").setAttribute("aria-expanded","false");
+  }
+});
+
+$("gen").onclick = () => {
+  note("genErr","");
+  const courses = [...SELECTED];
+  if(!courses.length) return note("genErr","اختر مادة واحدة على الأقل من القائمة.");
+
+  let rows = PARSED;
+  if(!$("keepClosed").checked) rows = rows.filter(r => !/مغلق/.test(r.status));
+
+  const clashes = examConflict(rows, courses);
+  if(clashes.length){
+    const lines = clashes.map(c =>
+      `<li>الفترة <b>${c.period}</b>: ${c.courses.map(x=>x.split(" · ").pop()).join(" + ")}</li>`).join("");
+    return noteHTML("genErr",
+      `<b>لا يمكن اقتراح الجداول بسبب التعارض في فترة الاختبار النهائي.</b>` +
+      `<ul class="clash">${lines}</ul>` +
+      `المواد التي تشترك في فترة اختبار واحدة لا يمكن تسجيلها معًا — استبدل إحداها.`);
+  }
+
+  const opts = buildOptions(rows, courses);
+  const dead = courses.filter(c => !opts[c] || !opts[c].length);
+  if(dead.length) return note("genErr", `لا توجد شعب مكتملة للمقررات التالية: ${dead.join("، ")}${$("keepClosed").checked ? "" : " — أشّر على «تضمين الشعب المغلقة ضمن الجداول المقترحة» لضمّها."}.`);
+
+  const maxBreak = Math.max(0, +$("maxBreak").value || 0);
+  const {results, capped} = generate(courses, opts, maxBreak, officialSlots($("ignoreBreak").checked));
+
+  if(!results.length){
+    $("results").style.display = "none";
+    return noteHTML("genErr",
+      `<b>تعذّر إيجاد أي جدول مطابق للشروط.</b> ` +
+      `لا يوجد توزيع للشعب المختارة يخلو من التعارض الزمني وفق الحد المحدد لساعات البريك (${maxBreak} ساعة). ` +
+      `يُقترح رفع الحد الأقصى لساعات البريك، أو اختيار مواد أخرى.`);
+  }
+  if(capped) note("genErr", `النتائج كثيرة جدًا — عُرضت أول ${HARD_CAP.toLocaleString("ar")} جدول فقط. قلّل ساعات البريك المسموحة لتضييق النتائج.`);
+
+  ALL = results;
+  PAGE = 0;
+  applySort();
+  $("results").style.display = "";
+  $("results").scrollIntoView({behavior:"smooth", block:"start"});
+};
+
+function applySort(){
+  SCHEDULES = sortSchedules(ALL, $("sortBy").value);
+  PAGE = 0;
+  showPage();
+}
+$("sortBy").onchange = () => { if(ALL.length) applySort(); };
+$("maxBreak").oninput = () => { $("maxBreakOut").textContent = $("maxBreak").value; };
+
+let fitTimer;
+window.addEventListener("resize", () => {
+  clearTimeout(fitTimer);
+  fitTimer = setTimeout(() => fitBlocks($("canvas")), 120);
+});
+
+$("prev").onclick = () => { PAGE--; showPage(); $("results").scrollIntoView({behavior:"smooth", block:"start"}); };
+$("next").onclick = () => { PAGE++; showPage(); $("results").scrollIntoView({behavior:"smooth", block:"start"}); };
+document.addEventListener("keydown", e => {
+  if(!SCHEDULES.length || /INPUT|SELECT|TEXTAREA/.test(e.target.tagName)) return;
+  if(e.key === "ArrowLeft"  && !$("next").disabled) $("next").click();
+  if(e.key === "ArrowRight" && !$("prev").disabled) $("prev").click();
+});
+
+</script>
+</body>
+</html>
