@@ -548,6 +548,10 @@ label.check input{width:17px;height:17px;accent-color:var(--indigo);cursor:point
   border-radius:999px;padding:3px 14px;font-size:12.5px;font-weight:600;
   font-variant-numeric:tabular-nums;
 }
+.examtable .r-day span.none{
+  background:transparent;border:1px dashed var(--line);
+  color:var(--ink-soft);font-weight:500;
+}
 
 /* ===== التذييل ===== */
 .support{
@@ -684,6 +688,12 @@ footer.site{
       <button type="button" class="major" data-major="هندسة صناعية" style="--acc:#38BDF8">
         <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 20V10l6 4V10l6 4V6l6 3v11z"/><path d="M3 20h18"/></svg></span>
         <span class="t">هندسة صناعية</span>
+        <span class="u">جامعة جازان</span>
+      </button>
+
+      <button type="button" class="major" data-major="هندسة ميكانيكية" style="--acc:#C084FC">
+        <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.2"/><path d="M12 3.5v2.8M12 17.7v2.8M20.5 12h-2.8M6.3 12H3.5M18 6l-2 2M8 16l-2 2M18 18l-2-2M8 8 6 6"/></svg></span>
+        <span class="t">هندسة ميكانيكية</span>
         <span class="u">جامعة جازان</span>
       </button>
 
@@ -1232,7 +1242,8 @@ function packTimes(rowsList){
 }
 
 /* الهندسة الكهربائية: الربط يختلف عن بقية التخصصات.
-   - العملي «حرّ»: كل شعبة نظري تُجرَّب مع كل شعبة عملي.
+   - العملي «حرّ»: كل شعبة نظري تُجرَّب مع كل شعبة عملي، إلا في مقرر
+     نظري+عملي فقط تساوى فيه عدد الشعب، فيكون الربط الأول بالأول.
    - التمارين «الأول بالأول» مع النظري؛ والنظري بلا تمارين مقابل يُستبعد
      إن كان المقرر يتضمّن تمارين.
    - مقرر بنشاط واحد فقط (نظري فقط، أو عملي فقط): كل شعبة خيار مستقل. */
@@ -1252,6 +1263,9 @@ function buildOptionsEE(cr){
     return only.map(pack => ({rows: pack, times: packTimes(pack)}));
   }
 
+  // نظري + عملي فقط (بلا تمارين) وعددهما متساوٍ ← ربط الأول بالأول
+  const pairLab = hasT && hasL && !hasU && theory.length === lab.length;
+
   const list = [];
   for(let i=0; i<theory.length; i++){
     let base = [...theory[i]];
@@ -1262,9 +1276,16 @@ function buildOptionsEE(cr){
     }
 
     if(hasL){
-      for(const l of lab){               // العملي حرّ: خيار لكل شعبة عملي
-        const rowsList = base.concat(l);
+      // إذا تساوى عدد شعب النظري والعملي في مقرر بلا تمارين، فالربط
+      // «الأول بالأول»؛ وإلا فالعملي حرّ ويتفرّع من كل شعبة نظري.
+      if(pairLab){
+        const rowsList = base.concat(lab[i]);
         list.push({rows: rowsList, times: packTimes(rowsList)});
+      }else{
+        for(const l of lab){
+          const rowsList = base.concat(l);
+          list.push({rows: rowsList, times: packTimes(rowsList)});
+        }
       }
     }else{
       list.push({rows: base, times: packTimes(base)});
@@ -1275,7 +1296,7 @@ function buildOptionsEE(cr){
 
 function buildOptions(rows, courses){
   const opts = {};
-  const ee = (MAJOR === "هندسة كهربائية" || MAJOR === "هندسة صناعية");
+  const ee = (MAJOR === "هندسة كهربائية" || MAJOR === "هندسة صناعية" || MAJOR === "هندسة ميكانيكية");
 
   for(const c of courses){
     const cr = rows.filter(r=>r.course===c);
@@ -1799,16 +1820,21 @@ function renderExams(){
 
   const rows = [];
   for(const c of SELECTED){
-    for(const p of examOf(c)) rows.push({course: c, period: Number(p)});
+    const periods = examOf(c);
+    if(periods.length) periods.forEach(p => rows.push({course: c, period: Number(p)}));
+    else rows.push({course: c, period: null});    // مقرر لم تُعلن فترة اختباره
   }
   if(!rows.length) return;
 
-  rows.sort((a, b) => a.period - b.period);
+  // المقررات المعلومة أولًا بترتيب فترتها، ثم غير المحددة في آخر الجدول
+  rows.sort((a, b) => (a.period === null) - (b.period === null) || a.period - b.period);
 
   // صفّان أفقيان: المقررات في الأعلى، وأيام اختبارها تحتها مباشرة
   const nameOf = course => (PARSED.find(x => x.course === course)?.name) || course;
   const head = rows.map(r => `<th>${nameOf(r.course)}</th>`).join("");
-  const days = rows.map(r => `<td><span>اليوم ${examDayOf(r.period)}</span></td>`).join("");
+  const days = rows.map(r => r.period === null
+    ? `<td><span class="none">لم يُحدَّد</span></td>`
+    : `<td><span>اليوم ${examDayOf(r.period)}</span></td>`).join("");
 
   box.innerHTML = `
     <div class="examcard">
@@ -1935,6 +1961,21 @@ const PLANS = {
     ["المستوى التاسع", [["414هصن-2","تصميم التجارب"],["441هصن-3","تحليل و تصميم النظم الصناعية"],["453هصن-3","التصنيع بمساعدة الحاسب"],["454هصن-3","الروبوتات الصناعية"],["461هصن-3","أنظمة التحكم الآلي"],["496هصن-2","التدريب الصيفي"],["498هصن-1","مشروع التخرج 1"]]],
     ["المستوى العاشر", [["437هصن-2","تطبيقات الحاسب في الهندسة الصناعية"],["438هصن-2","السلامة الصناعية والصحة"],["439هصن-2","تخطيط المنشآت"],["442هصن-2","أنظمة التموين و سلاسل الامداد"],["443هصن-2","تصميم قواعد البيانات"],["444هصن-2","إدارة الجودة الشاملة"],["445هصن-2","قياسات الإنتاجية"],["446هصن-2","أنظمة إدارة الموارد البشرية"],["462هصن-2","التصنيع المتكامل بالحاسب"],["463هصن-2","تحليل وتصميم المنتجات"],["464هصن-2","أنظمة التصنيع المرن"],["465هصن-2","عمليات التشغيل المتقدمة"],["466هصن-2","تصميم الأنظمة الميكاترونية"],["499هصن-3","مشروع التخرج 2"]]],
   ],
+
+  "هندسة ميكانيكية": [
+    ["المستوى الأول", [["101ريض","رياضيات عامة"],["101سلم","ثقافة إسلامية 1"],["101نجل","لغة إنجليزية 1"],["132همك","التصميم الهندسي"]]],
+    ["المستوى الثاني", [["211ريض","تفاضل وتكامل 1"],["102سلم","ثقافة إسلامية 2"],["101فيز","فيزياء عامة"],["102نجل","لغة إنجليزية 2"]]],
+    ["المستوى الثالث", [["228ريض","تفاضل وتكامل 2"],["203فيز","فيزياء 2"],["106كيم","كيمياء عامة"],["111هكه","أساسيات الهندسة الكهربائية"],["131همك","الرسم الهندسي"]]],
+    ["المستوى الرابع", [["222حال","لغة برمجة"],["319ريض","تفاضل وتكامل 3"],["206كيم","كيمياء 2"],["111همد","استاتيكا"],["111همك","استاتيكا"],["133همك","ديناميكا"]]],
+    ["المستوى الخامس", [["336ريض","المعادلات التفاضلية"],["102عرب","التحرير العربي"],["211همك","الديناميكا الحرارية 1"],["234همك","الرسم الميكانيكي"],["251همك","هندسة الإنتاج والورش"],["261همك","علم المواد"]]],
+    ["المستوى السادس", [["354احص","احصاء واحتمالات"],["212همك","الديناميكا الحرارية 2"],["252همك","تشكيل المعادن"],["262همك","الاختبارات الميكانيكية للمواد"],["263همك","ميكانيكا المواد"],["271همك","نظرية الماكينات"]]],
+    ["المستوى السابع", [["357نجل","الكتابة الفنية"],["346هكه","هندسة المنظومات الكهروميكانيكية"],["313همك","ميكانيكا الموائع"],["335همك","تصميم الماكينات 1"],["364همك","هندسة المواد"],["372همك","ديناميكا المنظومات"]]],
+    ["المستوى الثامن", [["410ريض","طرق عددية"],["346هصن","إقتصاد هندسي"],["346حصن","إقتصاد هندسي"],["461هكم","هندسة البيئة"],["461حكم","هندسة البيئة"],["314همك","انتقال الحرارة"],["315همك","القياسات الميكانيكية"],["336همك","تصميم الماكينات 2"],["373همك","الاهتزازات الميكانيكية"]]],
+    ["المستوى التاسع", [["428هصن","الإدارة الصناعية وضبط الجودة"],["428حصن","الإدارة الصناعية وضبط الجودة"],["453همك","نظريات القطع وتشغيل المعادن"],["474همك","التحكم الآلي"],["496همك","التدريب الصيفي"],["498همك","مشروع التخرج 1"]]],
+    ["المستوى التاسع — اختياري", [["421همك","ديناميكا الغازات"],["422همك","تبريد وتكييف الهواء"],["454همك","تصميم عدد القطع ومعدات التشكيل"],["465همك","اختيار المواد في التصميم والتصنيع"],["475همك","ميكاترونكس"]]],
+    ["المستوى العاشر", [["416همك","محركات الاحتراق الداخلي"],["417همك","الطاقات المتجددة"],["499همك","مشروع التخرج 2"]]],
+    ["المستوى العاشر — اختياري", [["423همك","الآلات التوربينية"],["424همك","أنظمة الشبكات الهيدروليكية"],["425همك","محطات القوى الحرارية"],["426همك","التحكم في قدرة الموائع"],["427همك","محطات القوى والتحلية"],["444همك","ترايبولوجيا"],["446همك","مقدمة في تقنية النانو"],["455همك","التصميم والتصنيع باستخدام الحاسب"],["456همك","تصميم المثبتات والمرشدات المدعم بالحاسب"],["466همك","هندسة التأكل"],["467همك","تقنيات اللحام المتقدمة"],["476همك","الروبوت"],["477همك","تقنية الأتمتة"]]],
+  ],
 };
 
 const OTHER_LEVEL = "مستويات أخرى";
@@ -1949,6 +1990,17 @@ const normText = t => String(t || "")
   .trim();
 
 const normCode = normText;
+
+/* الرمز الأساس: رقم المقرر ورمز قسمه بلا لاحقة الساعات ولا ترتيب معيّن.
+   يقبل «132همك-3» و«همك-132» و«132همك» على أنها رمز واحد. */
+function baseCode(code){
+  const t = normCode(code);
+  const dept = (t.match(/[\u0621-\u064A]+/g) || []).join("");
+  const nums = t.match(/\d+/g) || [];
+  // رقم المقرر هو أطول سلسلة أرقام (٣ خانات عادةً)، ولاحقة الساعات خانة واحدة
+  const num = nums.sort((a,b) => b.length - a.length)[0] || "";
+  return num + dept;
+}
 
 /* قسم المقرر: آخر مقطع حروف في الرمز، منزوعًا منه حروف الاختياري.
    "262ريض" ← ريض   ·   "4ااشبك-3" ← شبك   ·   "ب 5عال-3" ← عال */
@@ -1972,10 +2024,12 @@ function groupByLevel(courses){
   if(!plan) return [[null, courses]];
 
   const byCode = new Map();          // رمز ← رقم المستوى
+  const byBase = new Map();          // رمز أساس (بلا لاحقة الساعات) ← رقم المستوى
   const byName = new Map();          // اسم ← [{level, dept}]
   plan.forEach(([, pairs], i) => {
     for(const [code, name] of pairs){
       byCode.set(normCode(code), i);
+      byBase.set(baseCode(code), i);
       if(name){
         const key = normText(name);
         if(!byName.has(key)) byName.set(key, []);
@@ -1996,6 +2050,8 @@ function groupByLevel(courses){
 
     if(byCode.has(code)){
       i = byCode.get(code);
+    }else if(byBase.has(baseCode(row?.code))){
+      i = byBase.get(baseCode(row?.code));
     }else if(byName.has(name)){
       const dept = deptOf(code);
       const hit  = byName.get(name).find(e => e.dept && e.dept === dept);
@@ -2073,7 +2129,7 @@ $("parse").onclick = () => {
 //   تركيبة صالحة من نظري وعملي وتمارين، وهو ما يعكس اختيارات الطالب الحقيقية.
 function sectionCount(course){
   const cr = PARSED.filter(r => r.course === course);
-  if(MAJOR === "هندسة كهربائية" || MAJOR === "هندسة صناعية"){
+  if(MAJOR === "هندسة كهربائية" || MAJOR === "هندسة صناعية" || MAJOR === "هندسة ميكانيكية"){
     // عدد الاحتمالات التي يعطيها المقرر فعلًا (نفس ما يولّده buildOptionsEE)
     return buildOptionsEE(cr).length;
   }
